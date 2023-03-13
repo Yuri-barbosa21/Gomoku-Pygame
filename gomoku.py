@@ -39,7 +39,7 @@ class Tabuleiro:
         self.pecas_desenhadas = []
 
     def desenha_tabuleiro(self, tela):
-        self.imagem_tabuleiro = pygame.image.load('imagens/tabuleiros/tabuleiro2.png').convert_alpha()
+        self.imagem_tabuleiro = pygame.image.load('imagens/tabuleiros/tabuleiro3.png').convert_alpha()
         self.imagem_tabuleiro_rect = self.imagem_tabuleiro.get_rect(center = (TELA_X / 2, TELA_Y / 2))
 
         tela.blit(self.imagem_tabuleiro, self.imagem_tabuleiro_rect)
@@ -103,7 +103,7 @@ class Jogo:
             # Eventos do Jogo
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
-                    pygame.quit()
+                    pygame.quit()                                                                                       
                     exit()
         
                 if JOGO_ATIVO:
