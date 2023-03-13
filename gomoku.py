@@ -1,6 +1,7 @@
 import pygame
 from sys import exit
 import numpy as np
+from random import randint
 
 
 TELA_X = 1800
@@ -35,8 +36,9 @@ class Tabuleiro:
         self.coluna = coluna
         self.matriz = np.zeros((linha,coluna))
         self.jogos = [] # Lista para guardas os estados do jogo
+        self.pecas_desenhadas = []
 
-    def imprime_tabuleiro(self, tela):
+    def desenha_tabuleiro(self, tela):
         self.imagem_tabuleiro = pygame.image.load('imagens/tabuleiros/tabuleiro2.png').convert_alpha()
         self.imagem_tabuleiro_rect = self.imagem_tabuleiro.get_rect(center = (TELA_X / 2, TELA_Y / 2))
 
@@ -60,6 +62,14 @@ class Tabuleiro:
     def jogar(self, linha, coluna):
         self.matriz[linha][coluna] = 1
 
+    def desenha_peca(self, tela, i, j):
+        peca = pygame.image.load('imagens/pecas/brancas.png').convert_alpha()
+        peca_rect = peca.get_rect()
+        peca_rect.center = self.quadrados[i][j].center
+        tela.blit(peca, peca_rect)
+        self.pecas_desenhadas.append(self.quadrados[i][j])
+
+
         
 
 
@@ -72,13 +82,18 @@ class Jogo:
         self.tabuleiro = tabuleiro
         self.jogador1 = jogador1
         self.jogador2 = jogador2
-        self.jogador_atual = self.jogador1
+
+        if randint(0, 2) == 1:
+            self.jogador_atual = self.jogador1
+        else: self.jogador_atual = self.jogador2
 
         pygame.init()
 
         self.tela = pygame.display.set_mode((TELA_X, TELA_Y)) # Inicialza a tela 
         pygame.display.set_caption('Gomoku') # Nome da janela do jogo
         self.clock = pygame.time.Clock() # Inicializa o relógio do código
+
+
 
     def iniciar_jogo(self):
 
@@ -93,8 +108,7 @@ class Jogo:
         
                 if JOGO_ATIVO:
 
-                    self.tela.fill((186, 215, 233)) # Pinta o fundo do tela
-                    self.tabuleiro.imprime_tabuleiro(self.tela) # Mostra tabuleiro na tela
+                    
                     
                     if event.type == pygame.MOUSEBUTTONUP:
                         pos = pygame.mouse.get_pos()
@@ -102,15 +116,23 @@ class Jogo:
                             for j in range(TABULEIRO_ALTURA):
                                 if self.retangulos[i][j].collidepoint(pos):
                                     print(f'Cliquei no quadrado {i} {j}') # mostra na tela as cordenadas do clique
-                                    pygame.draw.circle(self.tela, 'White', self.retangulos[i][j].center, 18)
+                                    #pygame.draw.circle(self.tela, 'White', self.retangulos[i][j].center, 18)
                                     self.tabuleiro.jogar(i, j)
+                                    self.tabuleiro.desenha_peca(self.tela, i, j)
+                                    
                                     self.jogador_atual = self.jogador2  if self.jogador_atual == self.jogador1 else self.jogador1
 
 
+                    self.tela.fill((186, 215, 233)) # Pinta o fundo do tela
+                    self.tabuleiro.desenha_tabuleiro(self.tela) # Mostra tabuleiro na tela
 
+                    for i in range(TABULEIRO_LARGURA):
+                        for j in range(TABULEIRO_ALTURA):
+                            if self.tabuleiro.matriz[i][j] == 1:
+                                self.tabuleiro.desenha_peca(self. tela, i, j)
                 #print(pygame.mouse.get_pos())
 
-            
+
         
 
             '''
