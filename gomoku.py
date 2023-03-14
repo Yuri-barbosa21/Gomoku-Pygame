@@ -185,9 +185,28 @@ class Jogo:
         pygame.display.set_caption('Gomoku') # Nome da janela do jogo
         self.clock = pygame.time.Clock() # Inicializa o relógio do código
 
-        self.JOGO_ATIVO = True
+        self.JOGO_ATIVO = 0
 
-        
+        self.jogo_status = {
+            'jogar_menu1': 0,
+            'opcoes_menu2': 1,
+            'opcoes_menu3': 2,
+            'jogar': 3,
+            'fim_jogo': 4
+        }
+
+        # Menu 1
+        self.jogar_menu1 = pygame.image.load('imagens/menu/jogar_menu1.png').convert()
+        self.jogar_menu1_rect = self.jogar_menu1.get_rect(center = (TELA_X / 2, TELA_Y / 2))
+
+        # Menu 2
+
+        # Menu 3
+
+        # Botões
+        self.botao_jogar = pygame.image.load('imagens/botoes/jogar.png').convert_alpha()
+        self.botao_jogar_rect = self.botao_jogar.get_rect(center = (TELA_X / 2, (TELA_Y / 2) + 150))
+        self.cor_sobreposicao = (50, 50, 50)
 
     def iniciar_jogo(self):
 
@@ -201,8 +220,23 @@ class Jogo:
                 if event.type == pygame.QUIT:
                     pygame.quit()                                                                                       
                     exit()
+
+                if self.JOGO_ATIVO == self.jogo_status['jogar_menu1']:
+                    self.tela.blit(self.jogar_menu1, self.jogar_menu1_rect)
+                    self.tela.blit(self.botao_jogar, self.botao_jogar_rect)
+                    #self.JOGO_ATIVO = self.jogo_status['jogar']
+                    pos = pygame.mouse.get_pos()
+
+                    if self.botao_jogar_rect.collidepoint(pos):
+                        self.botao_jogar_copy = self.botao_jogar.copy()
+                        self.botao_jogar_copy.fill(self.cor_sobreposicao, special_flags=pygame.BLEND_ADD)
+                        self.tela.blit(self.botao_jogar_copy, self.botao_jogar_rect)
+
+                    if event.type == pygame.MOUSEBUTTONDOWN:
+                        if self.botao_jogar_rect.collidepoint(pos):
+                            self.JOGO_ATIVO = self.jogo_status['jogar']
         
-                if self.JOGO_ATIVO:
+                elif self.JOGO_ATIVO ==  self.jogo_status['jogar']:
                     
                     if event.type == pygame.MOUSEBUTTONDOWN:
                         if event.button == 1: # botão direito do mouse
@@ -214,7 +248,7 @@ class Jogo:
                                         if self.tabuleiro.jogar(linha= coluna, coluna= linha, jogador= self.jogador_atual):
                                             self.tabuleiro.desenha_peca(self.tela, linha, coluna, self.jogador_atual)
                                             if self.tabuleiro.verifica_se_ganhou(self.jogador_atual.num_peca):
-                                                self.JOGO_ATIVO = False
+                                                self.JOGO_ATIVO = self.jogo_status['fim_jogo']
                                             else:
                                                 self.jogador_atual = self.jogador2  if self.jogador_atual == self.jogador1 else self.jogador1
                                         else:
@@ -222,7 +256,7 @@ class Jogo:
                                     
 
 
-                    self.tela.fill((186, 215, 233)) # Pinta o fundo do tela
+                    self.tela.fill('#FFF8D1') # Pinta o fundo do tela
                     self.tabuleiro.desenha_tabuleiro(self.tela) # Mostra tabuleiro na tela
 
                     for i in range(TABULEIRO_LARGURA):
@@ -232,7 +266,7 @@ class Jogo:
                             elif self.tabuleiro.matriz[i][j] == 2:
                                 self.tabuleiro.desenha_peca(self. tela, i, j, self.jogador2)
 
-                else:
+                elif self.JOGO_ATIVO == self.jogo_status['fim_jogo']:
                     ganhou = pygame.font.Font('fontes/Roobek.otf', 60)
                     ganhou_fonte = ganhou.render(f'{self.jogador_atual.nome} ganhou', True, 'Red')
                     ganho_font_rect = ganhou_fonte.get_rect(center= (TELA_X / 2, TELA_Y / 2))
@@ -244,7 +278,7 @@ class Jogo:
                             if randint(0, 2) == 1: self.jogador_atual = self.jogador1
                             else: self.jogador_atual = self.jogador2   
 
-                            self.JOGO_ATIVO = True
+                            self.JOGO_ATIVO = self.jogo_status['jogar']
         
 
             '''
