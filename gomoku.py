@@ -91,8 +91,10 @@ class Tabuleiro:
         
 
     def desenha_peca(self, tela, linha, coluna, jogador):
+        pretas = 'pretas'
+
         peca_branca = pygame.image.load('imagens/pecas/brancas.png').convert_alpha()
-        peca_preta = pygame.image.load('imagens/pecas/pretas.png').convert_alpha()
+        peca_preta = pygame.image.load(f'imagens/pecas/{pretas}.png').convert_alpha()
 
         if jogador.num_peca == 1:
             peca_branca_rect = peca_branca.get_rect()
@@ -105,6 +107,15 @@ class Tabuleiro:
             tela.blit(peca_preta, peca_preta_rect)
             self.pecas_pretas_desenhadas.append(self.quadrados[coluna][linha])
 
+
+    def limpar_tabuleiro(self):
+        for i in range(TABULEIRO_LARGURA):
+            for j in range(TABULEIRO_ALTURA):
+                if self.matriz[i][j] != 0:
+                    self.matriz[i][j] = 0
+
+        self.pecas_brancas_desenhadas.clear()
+        self.pecas_pretas_desenhadas.clear()
 
             #----------------------- VERIFICA SE O JOGADOR GANHOU -------------------------
     def verifica_se_ganhou(self, peca):
@@ -176,6 +187,7 @@ class Jogo:
 
         self.JOGO_ATIVO = True
 
+        
 
     def iniciar_jogo(self):
 
@@ -192,26 +204,22 @@ class Jogo:
         
                 if self.JOGO_ATIVO:
                     
-                    if event.type == pygame.MOUSEBUTTONUP:
-                        pos = pygame.mouse.get_pos()
-                        for linha in range(TABULEIRO_LARGURA):
-                            for coluna in range(TABULEIRO_ALTURA):
-                                if self.retangulos[linha][coluna].collidepoint(pos):
-                                    print(f'Cliquei no quadrado {coluna} {linha}') # mostra na tela as cordenadas do clique
-                                    #pygame.draw.circle(self.tela, 'White', self.retangulos[i][j].center, 18)
-                                    if self.tabuleiro.jogar(linha= coluna, coluna= linha, jogador= self.jogador_atual):
-                                        self.tabuleiro.desenha_peca(self.tela, linha, coluna, self.jogador_atual)
-                                        if self.tabuleiro.verifica_se_ganhou(self.jogador_atual.num_peca):
-                                            self.JOGO_ATIVO = False
+                    if event.type == pygame.MOUSEBUTTONDOWN:
+                        if event.button == 1: # botão direito do mouse
+                            pos = pygame.mouse.get_pos()
+                            for linha in range(TABULEIRO_LARGURA):
+                                for coluna in range(TABULEIRO_ALTURA):
+                                    if self.retangulos[linha][coluna].collidepoint(pos):
+
+                                        if self.tabuleiro.jogar(linha= coluna, coluna= linha, jogador= self.jogador_atual):
+                                            self.tabuleiro.desenha_peca(self.tela, linha, coluna, self.jogador_atual)
+                                            if self.tabuleiro.verifica_se_ganhou(self.jogador_atual.num_peca):
+                                                self.JOGO_ATIVO = False
+                                            else:
+                                                self.jogador_atual = self.jogador2  if self.jogador_atual == self.jogador1 else self.jogador1
                                         else:
-                                            self.jogador_atual = self.jogador2  if self.jogador_atual == self.jogador1 else self.jogador1
-                                            
-                                            
-                                        print(self.tabuleiro.matriz)
-                                    else:
-                                        jogada_valida = False
-                                        print('JOGADA INVALIDA')       
-                                        print(self.tabuleiro.matriz)
+                                            print('JOGADA INVALIDA')       
+                                    
 
 
                     self.tela.fill((186, 215, 233)) # Pinta o fundo do tela
@@ -223,14 +231,20 @@ class Jogo:
                                 self.tabuleiro.desenha_peca(self. tela, i, j, self.jogador1)
                             elif self.tabuleiro.matriz[i][j] == 2:
                                 self.tabuleiro.desenha_peca(self. tela, i, j, self.jogador2)
-                                
-                #print(pygame.mouse.get_pos())
 
                 else:
                     ganhou = pygame.font.Font('fontes/Roobek.otf', 60)
                     ganhou_fonte = ganhou.render(f'{self.jogador_atual.nome} ganhou', True, 'Red')
                     ganho_font_rect = ganhou_fonte.get_rect(center= (TELA_X / 2, TELA_Y / 2))
                     self.tela.blit(ganhou_fonte, ganho_font_rect)
+                    if event.type == pygame.KEYDOWN:
+                        if event.key == pygame.K_RETURN:
+                            self.tabuleiro.limpar_tabuleiro()
+
+                            if randint(0, 2) == 1: self.jogador_atual = self.jogador1
+                            else: self.jogador_atual = self.jogador2   
+
+                            self.JOGO_ATIVO = True
         
 
             '''
