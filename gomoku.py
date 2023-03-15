@@ -88,7 +88,15 @@ class Tabuleiro:
                 return True
         return False
              
+    def animar_botao(self, botao, botao_rect, tela):
+        pos = pygame.mouse.get_pos()
         
+        if botao_rect.collidepoint(pos):
+            cor_sobreposicao = (50, 50, 50)
+
+            botao_copy = botao.copy()
+            botao_copy.fill(cor_sobreposicao, special_flags=pygame.BLEND_ADD)
+            tela.blit(botao_copy, botao_rect)
 
     def desenha_peca(self, tela, linha, coluna, jogador):
         pretas = 'pretas'
@@ -199,16 +207,38 @@ class Jogo:
         self.jogar_menu1 = pygame.image.load('imagens/menu/jogar_menu1.png').convert()
         self.jogar_menu1_rect = self.jogar_menu1.get_rect(center = (TELA_X / 2, TELA_Y / 2))
 
-        # Menu 2
+        # Menu 2        
+        self.opcoes_menu2 = pygame.image.load('imagens/menu/opcoes_menu2.png').convert()
+        self.opcoes_menu2_rect = self.opcoes_menu2.get_rect(center = (TELA_X / 2, TELA_Y / 2))
 
         # Menu 3
+        self.opcoes_menu3 = pygame.image.load('imagens/menu/opcoes_menu3.png').convert()
+        self.opcoes_menu3_rect = self.opcoes_menu3.get_rect(center = (TELA_X / 2, TELA_Y / 2))
 
-        # Botões
+        # Botão Jogar
         self.botao_jogar = pygame.image.load('imagens/botoes/jogar.png').convert_alpha()
         self.botao_jogar_rect = self.botao_jogar.get_rect(center = (TELA_X / 2, (TELA_Y / 2) + 150))
-        self.cor_sobreposicao = (50, 50, 50)
+
+        # Botão jogadores
+        self.botao_jogadores = pygame.image.load('imagens/botoes/jogadores.png').convert_alpha()
+        self.botao_jogadores_rect = self.botao_jogadores.get_rect(center = (TELA_X / 2, (TELA_Y / 2) + 150))
+
+        # Botão Relógio
+        self.botao_relogio = pygame.image.load('imagens/botoes/relogio.png').convert_alpha()
+        self.botao_relogio_rect = self.botao_relogio.get_rect(center = (TELA_X / 2, (TELA_Y / 2) + 150))
+
+        # Botão Tabuleiro
+        self.botao_tabuleiro = pygame.image.load('imagens/botoes/tabuleiros.png').convert_alpha()
+        self.botao_tabuleiro_rect = self.botao_tabuleiro.get_rect(center = (TELA_X / 2, (TELA_Y / 2) + 150))
+
+        # Botão Voltar
+        self.botao_voltar = pygame.image.load('imagens/botoes/voltar.png').convert_alpha()
+        self.botao_voltar_rect = self.botao_voltar.get_rect(center = (TELA_X / 2, TELA_Y - 50))
+        
+        
 
     def iniciar_jogo(self):
+        
 
         self.retangulos = self.tabuleiro.matriz_cliclavel()
         
@@ -221,21 +251,54 @@ class Jogo:
                     pygame.quit()                                                                                       
                     exit()
 
+                #------------------------------ MENU 1 -------------------------------
+
                 if self.JOGO_ATIVO == self.jogo_status['jogar_menu1']:
                     self.tela.blit(self.jogar_menu1, self.jogar_menu1_rect)
+
                     self.tela.blit(self.botao_jogar, self.botao_jogar_rect)
-                    #self.JOGO_ATIVO = self.jogo_status['jogar']
+                    
+                    
+                    self.tabuleiro.animar_botao(self.botao_jogar, self.botao_jogar_rect, self.tela)
                     pos = pygame.mouse.get_pos()
+                    
+                    if event.type == pygame.MOUSEBUTTONDOWN:
+                        if self.botao_jogar_rect.collidepoint(pos):
+                            self.JOGO_ATIVO = self.jogo_status['opcoes_menu2']
 
-                    if self.botao_jogar_rect.collidepoint(pos):
-                        self.botao_jogar_copy = self.botao_jogar.copy()
-                        self.botao_jogar_copy.fill(self.cor_sobreposicao, special_flags=pygame.BLEND_ADD)
-                        self.tela.blit(self.botao_jogar_copy, self.botao_jogar_rect)
+                #------------------------------ MENU 2 -------------------------------
 
+                elif self.JOGO_ATIVO == self.jogo_status['opcoes_menu2']:
+                    self.tela.blit(self.opcoes_menu2, self.opcoes_menu2_rect)
+
+                    #self.tela.blit(self.botao_voltar, self.botao_voltar_rect)
+                    #self.tabuleiro.animar_botao(self.botao_voltar, self.botao_voltar_rect, self.tela)
+                    
+                    pos = pygame.mouse.get_pos()
+                    if event.type == pygame.MOUSEBUTTONDOWN:
+                        if self.botao_jogar_rect.collidepoint(pos):
+                            self.JOGO_ATIVO = self.jogo_status['opcoes_menu3']
+
+                #------------------------------ MENU 3 -------------------------------
+
+                elif self.JOGO_ATIVO == self.jogo_status['opcoes_menu3']:
+                    self.tela.blit(self.opcoes_menu3, self.opcoes_menu3_rect)
+
+                    self.tela.blit(self.botao_voltar, self.botao_voltar_rect)
+                    self.tabuleiro.animar_botao(self.botao_voltar, self.botao_voltar_rect, self.tela)
+
+                    self.tela.blit(self.botao_tabuleiros, self.botao_tabuleiros_rect)
+                    self.tabuleiro.animar_botao(self.botao_tabuleiros, self.botao_tabuleiros_rect, self.tela)
+                    
+                    pos = pygame.mouse.get_pos()
                     if event.type == pygame.MOUSEBUTTONDOWN:
                         if self.botao_jogar_rect.collidepoint(pos):
                             self.JOGO_ATIVO = self.jogo_status['jogar']
-        
+
+                        if self.botao_voltar_rect.collidepoint(pos):
+                            self.JOGO_ATIVO = self.jogo_status['opcoes_menu2']
+                        
+
                 elif self.JOGO_ATIVO ==  self.jogo_status['jogar']:
                     
                     if event.type == pygame.MOUSEBUTTONDOWN:
