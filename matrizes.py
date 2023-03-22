@@ -91,8 +91,31 @@ def obter_linhas(matriz):
         linhas_e_colunas.append(linha)
 
     tudo = diagonais + linhas_e_colunas
-    print(f"Tamanho de 'tudo': {0}", len(tudo))
     return tudo
+
+
+def obter_linhas_string(matriz):
+    diagonais = []
+    principal = diagonal_principal(matriz)
+    secundaria = diagonal_secundaria(matriz)
+
+    diagonais = principal + secundaria
+
+    linhas_e_colunas = []
+    for line in matriz:
+        linhas_e_colunas.append(line)
+
+    colunas = rodar_matriz(matriz)
+    for linha in colunas:
+        linhas_e_colunas.append(linha)
+
+    tudo = diagonais + linhas_e_colunas
+
+    tudo_string = []
+    for item in tudo:
+        tudo_string.append(''.join(str(num) for num in item))
+    return tudo_string
+
 
 
 
