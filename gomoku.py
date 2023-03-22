@@ -4,6 +4,7 @@ import numpy as np
 import copy
 from random import randint
 
+import matrizes
 
 '''------------------------ MACROS DO JOGO ------------------------'''
 # Tamanho da tela
@@ -294,6 +295,7 @@ class Jogo:
         self.fonte_jogadores_rect = self.fonte_jogadores.get_rect(center= (TELA_X / 2, TELA_Y / 2))
 
 
+    
 
 
 
@@ -473,13 +475,13 @@ class Jogo:
                                     if self.retangulos[linha][coluna].collidepoint(pos): # Verifica colisão do clique com os vértices
 
                                         if self.tabuleiro.jogar(linha= coluna, coluna= linha, jogador= self.jogador_atual): # Efetua joga se for válida
-
+                                            print(self.tabuleiro.matriz)
+                                            print(matrizes.obter_tamanhos_sequencias(self.tabuleiro.matriz, 2))
                                             self.tabuleiro.desenhar_peca(self.tela, linha, coluna, self.jogador_atual) # Desenha peça no local clicado
 
                                             if self.tabuleiro.verificar_se_ganhou(self.jogador_atual.num_peca): # Verifica se ganhou
                                                 
                                                 self.jogo_ativo = self.jogo_status['fim_jogo']
-                                                
 
                                             else:
                                                 # Troca jogador
@@ -579,8 +581,6 @@ class Gomoku:
         self.computador = 0
 
         self.jogo = Jogo(self.tabuleiro, self.jogador1, self.jogador2)
-
-        
 
     
 if __name__ == "__main__":
