@@ -1,4 +1,5 @@
 import matrizes
+import re
 
 def valor_heuristico(estado, jogador):
     pass
@@ -6,8 +7,12 @@ def valor_heuristico(estado, jogador):
 def gerar_filhos(estado, jogador):
     pass
 
-def jogo_final(estado):
-    pass
+def jogo_final(estado: list[list]):
+    tabuleiro_linear = matrizes.obter_linhas_string(estado)
+    for item in tabuleiro_linear:
+        if re.search("11111", item):
+            return True
+    return False
 
 def minimax(estado, profundidade, jogador_max, alfa, beta):
     if profundidade == 0 or jogo_final(estado):
@@ -40,8 +45,8 @@ matrix = [
     [0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0],
-    [1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0],
-    [0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0],
     [0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
     [0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
