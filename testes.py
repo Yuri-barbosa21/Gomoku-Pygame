@@ -44,9 +44,9 @@ matrix = [
 num = 1
 
 matrix2 = [
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 2, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0],
-    [0, 0, 2, 0, 2, 0, 0, 0, 0, 0, 0, 1, 0, 0],
+    [1, 2, 3, 0, 0, 0, 0, 0, 0, 0, 0, 6, 5, 4],
+    [2, 3, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 6, 5],
+    [3, 0, 2, 0, 2, 0, 0, 0, 0, 0, 0, 1, 0, 6],
     [0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -62,26 +62,50 @@ matrix2 = [
 
 #print(verifica_diagonais(matrix2, num)) 
 
-num_elementos_diagonais = []
+#https://www.youtube.com/watch?v=FH9BxnzumVo
+def diagonais(matriz):
+    linhas = len(matriz)
+    colunas = len(matriz[0])
 
-# iterar sobre cada elemento da matriz
-for i in range(len(matrix2)):
-    for j in range(len(matrix2[0])):
-        
-        # calcular a diagonal que passa pelo elemento (i,j)
-        diagonal = []
-        k, l = i, j
-        while k < len(matrix2) and l < len(matrix2[0]):
-            diagonal.append(matrix2[k][l])
-            k += 1
-            l += 1
-        
-        # adicionar o número de elementos na diagonal à lista
-        num_elementos_diagonais.append(len(diagonal))
+    print(linhas, colunas)
 
-# imprimir o número de elementos em cada diagonal
-#print(num_elementos_diagonais)
-def diagonals(matrix, num):
-    for i in range(0, len(matrix)):
-        for j in 
-        
+    res =[]
+
+    linha_atual = 0
+    coluna_atual = 0
+    subindo = True
+
+    while(len(res) != linhas * colunas):
+        if subindo:
+            while linha_atual >= 0 and coluna_atual < colunas:
+                res.append(matriz[linha_atual][coluna_atual])
+
+                linha_atual -= 1
+                coluna_atual += 1
+
+            if coluna_atual == colunas:
+                coluna_atual -= 1
+                linha_atual += 2
+            else: 
+                linha_atual += 1
+
+            subindo = False
+        else: 
+            while linha_atual < linhas and coluna_atual >= 0:
+                res.append(matriz[linha_atual][coluna_atual])
+
+                coluna_atual -= 1
+                linha_atual += 1
+
+            if linha_atual == linhas:
+                coluna_atual += 2
+                linha_atual -= 1
+
+            else:
+                coluna_atual += 1
+
+            subindo = True
+
+    return res
+
+print(diagonais(matrix2))
