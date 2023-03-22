@@ -18,7 +18,7 @@ def verificar_jogada(self, linha, coluna):
 
             print(f'LINHA: {linha} - COLUNA: {coluna}')
 
-            if jogador.num_peca == 1:
+            if jogador.jogador_peca == 1:
                 self.matriz[linha][coluna] = 1
                 return True
             else:
@@ -37,7 +37,65 @@ def gerar_filhos(estado, jogador):
 def jogo_final(estado):
     pass
 
-def obter_sequencias(estado)
+def obter_sequencias(matriz,jogador):
+    linha = len(matriz)
+    coluna = len(matriz[0])
+    seq_tamanhos = []
+
+    def processar_sequencia(count):
+        if count >= 2:
+            seq_tamanhos.append(count)
+
+    # Verificar horizontal
+    for i in range(linha):
+        count = 0
+        for j in range(coluna):
+            if matriz[i][j] == jogador:
+                count += 1
+            else:
+                processar_sequencia(count)
+                count = 0
+        processar_sequencia(count)
+
+    # Verificar vertical
+    for j in range(coluna):
+        count = 0
+        for i in range(linha):
+            if matriz[i][j] == jogador:
+                count += 1
+            else:
+                processar_sequencia(count)
+                count = 0
+        processar_sequencia(count)
+
+    # Verifica diagonal principal
+    for i in range(linha - 4):
+        for j in range(coluna - 4):
+            count = 0
+            for k in range(5):
+                if (matriz[i+k][j+k] == jogador):
+                    count += 1
+                else: 
+                    processar_sequencia(count)
+                    count = 0
+            processar_sequencia(count)
+
+    # Verifica diagonal secundária
+    for i in range(4, linha):
+        for j in range(coluna - 4):
+            count = 0
+            for k in range(5):
+                if (matriz[i-k][j+k] == jogador):
+                    count += 1
+                else: 
+                    processar_sequencia(count)
+                    count = 0
+            processar_sequencia(count)
+
+    return seq_tamanhos
+
+
+
 
 
 def minimax(estado, profundidade, jogador_max, alfa, beta):
@@ -62,3 +120,15 @@ def minimax(estado, profundidade, jogador_max, alfa, beta):
             if beta <= alfa:
                 break
         return valor_min
+
+matrix = [
+    [1, 0, 1, 1, 1, 1],
+    [0, 1, 0, 0, 1, 0],
+    [0, 0, 1, 1, 0, 0],
+    [0, 0, 1, 1, 0, 0],
+    [0, 1, 0, 0, 1, 0],
+]
+
+num = 1
+
+print(obter_sequencias(matrix, num)) 
