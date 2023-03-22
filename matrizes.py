@@ -91,7 +91,7 @@ def obter_linhas(matriz):
         linhas_e_colunas.append(linha)
 
     tudo = diagonais + linhas_e_colunas
-
+    print(f"Tamanho de 'tudo': {0}", len(tudo))
     return tudo
 
 
