@@ -294,6 +294,7 @@ class Jogo:
         self.fonte_jogadores_rect = self.fonte_jogadores.get_rect(center= (TELA_X / 2, TELA_Y / 2))
 
 
+    
 
 
 
@@ -473,13 +474,12 @@ class Jogo:
                                     if self.retangulos[linha][coluna].collidepoint(pos): # Verifica colisão do clique com os vértices
 
                                         if self.tabuleiro.jogar(linha= coluna, coluna= linha, jogador= self.jogador_atual): # Efetua joga se for válida
-
+                                            print(obter_sequencias(self.tabuleiro, 1))   
                                             self.tabuleiro.desenhar_peca(self.tela, linha, coluna, self.jogador_atual) # Desenha peça no local clicado
 
                                             if self.tabuleiro.verificar_se_ganhou(self.jogador_atual.num_peca): # Verifica se ganhou
                                                 
                                                 self.jogo_ativo = self.jogo_status['fim_jogo']
-                                                
 
                                             else:
                                                 # Troca jogador
@@ -586,3 +586,54 @@ class Gomoku:
 if __name__ == "__main__":
     gomoku = Gomoku()
     gomoku.jogo.iniciar_jogo()
+
+def obter_sequencias(estado: Tabuleiro, peca):
+    tamanhos_sequencias = []
+    # Verifica linha
+    for i in range(estado.linha):
+        ganhou = 0
+        for j in range(estado.coluna):
+            if (estado.matriz[i][j] == peca):
+                ganhou += 1
+            else:
+                if ganhou > 2:
+                    tamanhos_sequencias.append(ganhou)
+                ganhou = 0
+
+
+    # Verifica coluna
+    for j in range(estado.coluna):
+        ganhou = 0
+        for i in range(estado.linha):
+            if (estado.matriz[i][j] == peca):
+                ganhou += 1
+            else:
+                if ganhou > 2:
+                    tamanhos_sequencias.append(ganhou)
+                ganhou = 0
+
+    # Verifica diagonal principal
+    for i in range(estado.linha - 4):
+        for j in range(estado.coluna - 4):
+            ganhou = 0
+            for k in range(5):
+                if (estado.matriz[i+k][j+k] == peca):
+                    ganhou += 1
+                else:
+                    if ganhou > 2:
+                        tamanhos_sequencias.append(ganhou)
+                    ganhou = 0
+
+    # Verifica diagonal secundária
+    for i in range(4, estado.linha):
+        for j in range(estado.coluna - 4):
+            ganhou = 0
+            for k in range(5):
+                if (estado.matriz[i-k][j+k] == peca):
+                    ganhou += 1
+                else:
+                    if ganhou > 2:
+                        tamanhos_sequencias.append(ganhou)
+                    ganhou = 0
+
+    return tamanhos_sequencias
