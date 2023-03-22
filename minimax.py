@@ -51,4 +51,6 @@ matrix = [
 
 num = 1
 
-print(matrizes.obter_tamanhos_sequencias(matrix, num)) 
+#print(matrizes.obter_tamanhos_sequencias(matrix, num)) 
+
+matrizes.obter_linhas(matrix)

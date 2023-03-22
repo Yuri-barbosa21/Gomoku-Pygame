@@ -1,5 +1,5 @@
 #https://www.youtube.com/watch?v=FH9BxnzumVo
-def diagonais(matriz):
+def diagonal_principal(matriz):
     linhas = len(matriz)
     colunas = len(matriz[0])
 
@@ -55,6 +55,10 @@ def rodar_matriz(matriz):
     matriz_nova = list(map(list, zip(*matriz[::-1])))
     return matriz_nova
 
+def diagonal_secundaria(matriz):
+    rodada = rodar_matriz(matriz)
+    return diagonal_principal(rodada)
+
 def count_sequences(matrix, number):
     counts = []
     for sublist in matrix:
@@ -70,19 +74,25 @@ def count_sequences(matrix, number):
             counts.append(max_count)
     return counts
     
-def obter_tamanhos_sequencias(matriz, num_jogador):
-    diags = diagonais(matriz)
-    matriz_rodada = rodar_matriz(matriz)
+#Recebe uma matriz e devolve um array com linhas, colunas em forma de linha e ambas diagonais
+def obter_linhas(matriz):
+    diagonais = []
+    principal = diagonal_principal(matriz)
+    secundaria = diagonal_secundaria(matriz)
 
-    diags_sec = diagonais(matriz_rodada)
-    for line in diags_sec:
-        diags.append(line)
+    diagonais = principal + secundaria
 
-    linhas_matriz = []
+    linhas_e_colunas = []
     for line in matriz:
-        linhas_matriz.append(line)
-    for line in matriz_rodada:
-        linhas_matriz.append(line)
+        linhas_e_colunas.append(line)
 
-    tudo = diags + linhas_matriz
-    return(count_sequences(tudo, num_jogador))
+    colunas = rodar_matriz(matriz)
+    for linha in colunas:
+        linhas_e_colunas.append(linha)
+
+    tudo = diagonais + linhas_e_colunas
+
+    return tudo
+
+
+
