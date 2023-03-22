@@ -73,8 +73,16 @@ def count_sequences(matrix, number):
 def obter_tamanhos_sequencias(matriz, num_jogador):
     diags = diagonais(matriz)
     matriz_rodada = rodar_matriz(matriz)
+
     diags_sec = diagonais(matriz_rodada)
     for line in diags_sec:
         diags.append(line)
-    tudo = diags + matriz + matriz_rodada
+
+    linhas_matriz = []
+    for line in matriz:
+        linhas_matriz.append(line)
+    for line in matriz_rodada:
+        linhas_matriz.append(line)
+
+    tudo = diags + linhas_matriz
     return(count_sequences(tudo, num_jogador))

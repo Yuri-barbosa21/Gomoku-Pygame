@@ -4,66 +4,7 @@ import numpy as np
 import copy
 from random import randint
 
-class Minimax():
-    def obter_sequencias(matriz,jogador):
-        linha = len(matriz)
-        coluna = len(matriz[0])
-        seq_tamanhos = []
-
-        def processar_sequencia(count):
-            if count >= 2:
-                seq_tamanhos.append(count)
-
-        # Verificar horizontal
-        for i in range(linha):
-            count = 0
-            for j in range(coluna):
-                if matriz[i][j] == jogador:
-                    count += 1
-                else:
-                    processar_sequencia(count)
-                    count = 0
-            processar_sequencia(count)
-
-        # Verificar vertical
-        for j in range(coluna):
-            count = 0
-            for i in range(linha):
-                if matriz[i][j] == jogador:
-                    count += 1
-                else:
-                    processar_sequencia(count)
-                    count = 0
-            processar_sequencia(count)
-
-        # Verifica diagonal principal
-        for i in range(linha - 4):
-            for j in range(coluna - 4):
-                count = 0
-                for k in range(5):
-                    if (matriz[i+k][j+k] == jogador):
-                        count += 1
-                    else: 
-                        processar_sequencia(count)
-                        count = 0
-                processar_sequencia(count)
-
-        # Verifica diagonal secundária
-        for i in range(4, linha):
-            for j in range(coluna - 4):
-                count = 0
-                for k in range(5):
-                    if (matriz[i-k][j+k] == jogador):
-                        count += 1
-                    else: 
-                        processar_sequencia(count)
-                        count = 0
-                processar_sequencia(count)
-
-        return seq_tamanhos
-
-  
-
+import matrizes
 
 '''------------------------ MACROS DO JOGO ------------------------'''
 # Tamanho da tela
@@ -358,7 +299,7 @@ class Jogo:
 
 
 
-    def iniciar_jogo(self, minimax: Minimax):
+    def iniciar_jogo(self):
 
 
         self.retangulos = self.tabuleiro.gerar_matriz_cliclavel() # Gera matriz clicavel do tabuleiro
@@ -534,8 +475,8 @@ class Jogo:
                                     if self.retangulos[linha][coluna].collidepoint(pos): # Verifica colisão do clique com os vértices
 
                                         if self.tabuleiro.jogar(linha= coluna, coluna= linha, jogador= self.jogador_atual): # Efetua joga se for válida
-                                            print(minimax.obter_sequencias(self.tabuleiro.matriz, 2))
-                                            print(self.tabuleiro.matriz)   
+                                            print(self.tabuleiro.matriz)
+                                            print(matrizes.obter_tamanhos_sequencias(self.tabuleiro.matriz, 2))
                                             self.tabuleiro.desenhar_peca(self.tela, linha, coluna, self.jogador_atual) # Desenha peça no local clicado
 
                                             if self.tabuleiro.verificar_se_ganhou(self.jogador_atual.num_peca): # Verifica se ganhou
@@ -644,4 +585,4 @@ class Gomoku:
     
 if __name__ == "__main__":
     gomoku = Gomoku()
-    gomoku.jogo.iniciar_jogo(minimax=Minimax)
+    gomoku.jogo.iniciar_jogo()
