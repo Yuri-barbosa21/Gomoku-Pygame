@@ -115,7 +115,7 @@ def obter_linhas_string(matriz: list[list]):
     return linhas_string
 
 
-def calcular_pontuacao(estado, jogador):
+def calcular_pontuacao(estado: list[list], jogador: int):
     """
     Params: estado -> matriz do estado atual do jogo
             jogador -> número do jogador (1 ou 2)
