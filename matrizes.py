@@ -1,5 +1,15 @@
+import regex
+
 #https://www.youtube.com/watch?v=FH9BxnzumVo
-def diagonal_principal(matriz):
+def diagonal_principal(matriz: list[list]):
+    """
+    Params: matriz -> Uma matriz quadrada (lista de listas)
+    Returns: Uma matriz sendo cada linha uma diagonal
+    
+    1 0 0
+    0 1 0   -> Retorna: [[1], [0,0], [0,1,0], [0,0], [1]]
+    0 0 1 
+    """
     linhas = len(matriz)
     colunas = len(matriz[0])
 
@@ -51,31 +61,30 @@ def diagonal_principal(matriz):
             subindo = True
     return res
 
-def rodar_matriz(matriz):
+
+def rodar_matriz(matriz: list[list]):
+    """
+    #Params: matriz -> uma matriz quadrada (lista de listas)
+    #Returns: a transposta da matriz
+    """
     matriz_nova = list(map(list, zip(*matriz[::-1])))
     return matriz_nova
 
+
 def diagonal_secundaria(matriz):
+    """
+    #Params: matriz -> uma matriz quadrada (lista de listas)
+    #Returns: Uma matriz sendo cada linha uma diagonal
+    """
     rodada = rodar_matriz(matriz)
     return diagonal_principal(rodada)
 
-def count_sequences(matrix, number):
-    counts = []
-    for sublist in matrix:
-        count = 0
-        max_count = 0
-        for item in sublist:
-            if item == number:
-                count += 1
-                max_count = max(max_count, count)
-            else:
-                count = 0
-        if max_count > 1:
-            counts.append(max_count)
-    return counts
-    
-#Recebe uma matriz e devolve um array com linhas, colunas em forma de linha e ambas diagonais
-def obter_linhas(matriz):
+
+def obter_linhas(matriz: list[list]):
+    """
+    #Params: matriz -> uma matriz quadrada (lista de listas)
+    #returns: Uma matriz que contém todas as linhas, colunas e ambas diagonais da matriz original
+    """
     diagonais = []
     principal = diagonal_principal(matriz)
     secundaria = diagonal_secundaria(matriz)
@@ -94,31 +103,32 @@ def obter_linhas(matriz):
     return tudo
 
 
-def obter_linhas_string(matriz):
-    diagonais = []
-    principal = diagonal_principal(matriz)
-    secundaria = diagonal_secundaria(matriz)
-
-    diagonais = principal + secundaria
-
-    linhas_e_colunas = []
-    for line in matriz:
-        linhas_e_colunas.append(line)
-
-    colunas = rodar_matriz(matriz)
-    for linha in colunas:
-        linhas_e_colunas.append(linha)
-
-    tudo = diagonais + linhas_e_colunas
-
-    tudo_string = []
+def obter_linhas_string(matriz: list[list]):
+    """
+    Params: matriz -> uma matriz quadrada (lista de listas)
+    returns: Uma matriz que contém todas as linhas, colunas e ambas diagonais da matriz original mas em formato de string
+    """
+    tudo = obter_linhas(matriz)
+    linhas_string = []
     for item in tudo:
-        tudo_string.append(''.join(str(num) for num in item))
-    return tudo_string
+        linhas_string.append(''.join(str(num) for num in item))
+    return linhas_string
 
 
-#Matriz para testes
+def calcular_pontuacao(estado: list[list], jogador: int):
+    """
+    Params: estado -> matriz do estado atual do jogo
+            jogador -> número do jogador (1 ou 2)
+    returns: pontuação do estado atual
+    """
+    lista_de_strings = obter_linhas_string(estado)
+    if jogador == 1: 
+        return regex.calcular_pontuacao(lista_de_strings, regex.regras_jogador1)
+    else:
+        return regex.calcular_pontuacao(lista_de_strings, regex.regras_jogador2)
 
+
+#Matrizes para testes
 matriz_teste = [
     [1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -169,7 +179,4 @@ matriz_teste = [
 #     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 #     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 # ]
-
-
-
 

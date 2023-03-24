@@ -1,9 +1,8 @@
 import matrizes
 import re
-import regex
 
 def valor_heuristico(estado, jogador):
-    valor = regex.calcular_pontuacao(matrizes.obter_linhas_string(estado), jogador)
+    valor = matrizes.calcular_pontuacao(estado, jogador)
     return valor
 
 def gerar_filhos(estado, jogador):

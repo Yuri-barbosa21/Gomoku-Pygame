@@ -31,8 +31,8 @@ def calcular_pontuacao(lista_de_strings, regras):
         for regra in regras.values():
             for regex in regra['regex']:
                 if re.findall(regex, string):
-                    print(string)
-                    print(re.findall(regex, string))
+                    #print(string)
+                    #print(re.findall(regex, string))
                     pontuacao_total += regra['pontos'] 
     return pontuacao_total
 
