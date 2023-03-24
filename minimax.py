@@ -55,15 +55,23 @@ def minimax(estado, profundidade, jogador_max, alfa, beta):
 def fazer_jogada_minimax(estado, jogador_atual, profundidade_maxima):
     melhor_valor = float('-inf') if jogador_atual == 1 else float('inf')
     melhor_jogada = None
-    for jogada in gerar_filhos(estado, jogador_atual):
-        valor = minimax(jogada, profundidade_maxima, jogador_atual == 1, float('-inf'), float('inf'))
-        if jogador_atual == 1 and valor > melhor_valor:
-            melhor_valor = valor
-            melhor_jogada = jogada
-        elif jogador_atual == 2 and valor < melhor_valor:
-            melhor_valor = valor
-            melhor_jogada = jogada
-    return melhor_jogada
+    melhor_coordenada = None
+    for i in range(len(estado)):
+        for j in range(len(estado[i])):
+            if estado[i][j] == 0:
+                jogada = copy.deepcopy(estado)
+                jogada[i][j] = jogador_atual
+                valor = minimax(jogada, profundidade_maxima, jogador_atual == 1, float('-inf'), float('inf'))
+                if jogador_atual == 1 and valor > melhor_valor:
+                    melhor_valor = valor
+                    melhor_jogada = jogada
+                    melhor_coordenada = (i, j)
+                elif jogador_atual == 2 and valor < melhor_valor:
+                    melhor_valor = valor
+                    melhor_jogada = jogada
+                    melhor_coordenada = (i, j)
+    return melhor_coordenada
+
 
 matrix = [
     [1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0],
@@ -84,3 +92,4 @@ matrix = [
 
 num = 1
 
+print(fazer_jogada_minimax(matrix, 2, 5))
