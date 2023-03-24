@@ -1,8 +1,10 @@
 import matrizes
 import re
+import regex
 
 def valor_heuristico(estado, jogador):
-    pass
+    valor = regex.calcular_pontuacao(matrizes.obter_linhas_string(estado), jogador)
+    return valor
 
 def gerar_filhos(estado, jogador):
     pass
@@ -10,7 +12,9 @@ def gerar_filhos(estado, jogador):
 def jogo_final(estado: list[list]):
     tabuleiro_linear = matrizes.obter_linhas_string(estado)
     for item in tabuleiro_linear:
-        if re.search("11111", item):
+        if re.search("11111", item) or re.search("22222", item):
+            return True
+        elif re.search("0+", item) is None:
             return True
     return False
 
@@ -56,6 +60,3 @@ matrix = [
 
 num = 1
 
-#print(matrizes.obter_tamanhos_sequencias(matrix, num)) 
-
-matrizes.obter_linhas(matrix)
