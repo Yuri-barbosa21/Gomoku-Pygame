@@ -1,12 +1,24 @@
 import matrizes
 import re
+import regex
+import copy
 
 def valor_heuristico(estado, jogador):
-    valor = matrizes.calcular_pontuacao(estado, jogador)
-    return valor
+    if jogador == 1:
+        return matrizes.calcular_pontuacao(estado, jogador)
+    else: return matrizes.calcular_pontuacao(estado, jogador)
 
-def gerar_filhos(estado, jogador):
-    pass
+def gerar_filhos(estado, jogador_atual):
+    filhos = []
+    for i in range(len(estado)):
+        for j in range(len(estado[i])):
+            if estado[i][j] == 0:
+                novo_estado = copy.deepcopy(estado)  # faz uma cópia do estado atual
+                novo_estado[i][j] = jogador_atual  # preenche a posição vazia com a peça do jogador atual
+                filhos.append(novo_estado)
+    return filhos
+
+
 
 def jogo_final(estado: list[list]):
     tabuleiro_linear = matrizes.obter_linhas_string(estado)
@@ -39,6 +51,19 @@ def minimax(estado, profundidade, jogador_max, alfa, beta):
             if beta <= alfa:
                 break
         return valor_min
+
+def fazer_jogada_minimax(estado, jogador_atual, profundidade_maxima):
+    melhor_valor = float('-inf') if jogador_atual == 1 else float('inf')
+    melhor_jogada = None
+    for jogada in gerar_filhos(estado, jogador_atual):
+        valor = minimax(jogada, profundidade_maxima, jogador_atual == 1, float('-inf'), float('inf'))
+        if jogador_atual == 1 and valor > melhor_valor:
+            melhor_valor = valor
+            melhor_jogada = jogada
+        elif jogador_atual == 2 and valor < melhor_valor:
+            melhor_valor = valor
+            melhor_jogada = jogada
+    return melhor_jogada
 
 matrix = [
     [1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0],
