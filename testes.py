@@ -1,28 +1,53 @@
-def crossover(lista):
-    lista1 = []
-    lista2 = []
-    listaFinal = []
-    tamanho = len(lista)
+import minimax
 
-    for i in range(tamanho):
-        lista1.append(lista[i][0])
-        lista2.append(lista[i][1])
+JOGADAS_MINIMAX = []
+JOGADAS_PLAYER = []
 
-    for item in lista1:
-        for item2 in lista2:
-            listaFinal.append([item,item2])
-    
-    return listaFinal
+ESTADO = [
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+]
 
+#JOGADA PLAYER
+ESTADO[4][4] = 1
+JOGADAS_PLAYER.append((4, 4))
+print(f'Jogada PLAYER: {4}, {4}')
 
+#JOGADA MINIMAX
+jogada = minimax.jogar(ESTADO, 3, JOGADAS_PLAYER, JOGADAS_MINIMAX, (4,4))
+JOGADAS_MINIMAX.append(jogada)
+ESTADO[jogada[0]][jogada[1]] = 2
 
-con = [
-    [0,1],
-    [2,3],
-    [4,5],
-    [6,7],
-    [8,9]
-        ]
-  
-print(crossover(con))
-    
+#JOGADA PLAYER
+ESTADO[4][3] = 1
+JOGADAS_PLAYER.append((4, 3))
+print(f'Jogada PLAYER: {4}, {3}')
+
+#JOGADA MINIMAX
+jogada = minimax.jogar(ESTADO, 3, JOGADAS_PLAYER, JOGADAS_MINIMAX, (4,3))
+JOGADAS_MINIMAX.append(jogada)
+ESTADO[jogada[0]][jogada[1]] = 2
+
+#JOGADA PLAYER
+ESTADO[4][2] = 1
+JOGADAS_PLAYER.append((4, 2))
+print(f'Jogada PLAYER: {4}, {2}')
+
+#ATÉ AQUI FUNCIONA
+
+print(JOGADAS_PLAYER)
+print(JOGADAS_MINIMAX)
+
+#JOGADA MINIMAX
+jogada = minimax.jogar(ESTADO, 2, JOGADAS_PLAYER, JOGADAS_MINIMAX, (4,2))
+JOGADAS_MINIMAX.append(jogada)
+print(jogada)
+ESTADO[jogada[0]][jogada[1]] = 2
