@@ -1,0 +1,9 @@
+FUNÇÃO MINIMAX.JOGAR(ESTADO, PRODUNFIDADE, JOGADAS_PLAYER, JOGADAS_MINIMAX)
+     jogada = SELF.HEURÍSTICA()
+     if jogada == False:
+        jogada_mm = CONVERTER_JOGADA(FAZER_JOGADA_MINIMAX(
+            +REDUZIR MATRIZ
+        ))
+        return jogada_mm
+    else: return jogada
+    

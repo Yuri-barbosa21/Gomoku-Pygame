@@ -5,10 +5,9 @@ import copy
 def valor_heuristico(estado, jogador):
     if jogador == 1:
         return matrizes.calcular_pontuacao(estado, jogador)
-    else: return matrizes.calcular_pontuacao(estado, jogador)
 
 def gerar_filhos(estado, jogador_atual):
-    filhos = []
+    filhos = []     
     for i in range(len(estado)):
         for j in range(len(estado[i])):
             if estado[i][j] == 0:
@@ -40,9 +39,11 @@ def fazer_jogada_minimax(estado, jogador, profundidade_maxima):
     melhor_valor = float('-inf') if jogador == 1 else float('inf')
     melhor_jogada = None
     melhor_coordenada = None
+    #REDUZIR
     for i in range(len(estado)):
         for j in range(len(estado[i])):
             if estado[i][j] == 0:
+                print((i, j))
                 jogada = copy.deepcopy(estado)
                 jogada[i][j] = jogador
                 valor = minimax(jogada, profundidade_maxima, jogador)
