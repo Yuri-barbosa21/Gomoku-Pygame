@@ -152,7 +152,6 @@ def converter_coord(jogada, jogada_menor):
         y = jogada[1] - 4
 
     resultado = (x + jogada_menor[0]), (y + jogada_menor[1])
-    print(resultado)
     return resultado
 
 
@@ -164,7 +163,6 @@ def diminuir_matriz(matriz, jogada: tuple):
     coluna_inicio = 0
     linha_fim = 0
     coluna_fim = 0
-    #nova_matriz = [[0 for j in range(linha_fim - linha_inicio)] for i in range(coluna_fim - coluna_inicio)]
     
     if jogada[0] + x > 14:
         linha_inicio = jogada[0] - x
