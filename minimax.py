@@ -134,8 +134,7 @@ class Minimax:
         if jogada_heuristica == False:
             
             coordenada_minimax = self.fazer_jogada_minimax(estado, jogador, profundidade_max, ult_jogada)
-            jogada_mm = matrizes.converter_coord(ult_jogada, coordenada_minimax)
-            return jogada_mm
+            return coordenada_minimax
         else: return jogada_heuristica
 
         

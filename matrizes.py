@@ -140,6 +140,37 @@ def calcular_pontuacao(estado: list[list], jogador: int):
         return regex.calcular_pontuacao(lista_de_strings, regex.regras_jogador2)
 
 
+def vizinhanca(estado: list[list], i: int, j:int):
+        if i == 0 and j == 0:
+            if estado[i][j+1] != 0 or estado[i+1][j] != 0:
+                return True
+        elif i == 0 and j == len(estado[i])-1:
+            if estado[i][j-1] != 0 or estado[i+1][j] != 0:
+                return True
+        elif i == len(estado)-1 and j == 0:
+            if estado[i][j+1] != 0 or estado[i-1][j] != 0:
+                return True
+        elif i == len(estado)-1 and j == len(estado[i])-1:
+            if estado[i][j-1] != 0 or estado[i-1][j] != 0:
+                return True
+        elif i == 0:
+            if estado[i][j+1] != 0 or estado[i][j-1] != 0 or estado[i+1][j] != 0:
+                return True
+        elif i == len(estado)-1:
+            if estado[i][j+1] != 0 or estado[i][j-1] != 0 or estado[i-1][j] != 0:
+                return True
+        elif j == 0:
+            if estado[i][j+1] != 0 or estado[i+1][j] != 0 or estado[i-1][j] != 0:
+                return True
+        elif j == len(estado[i])-1:
+            if estado[i][j-1] != 0 or estado[i+1][j] != 0 or estado[i-1][j] != 0:
+                return True
+        else:
+            if estado[i][j+1] != 0 or estado[i][j-1] != 0 or estado[i+1][j] != 0 or estado[i-1][j] != 0:
+                return True
+        return False
+
+
 def converter_coord(jogada, jogada_menor):
     if (jogada[0] - 4) <= 0:
         x = 0
@@ -153,7 +184,6 @@ def converter_coord(jogada, jogada_menor):
 
     resultado = (x + jogada_menor[0]), (y + jogada_menor[1])
     return resultado
-
 
 
 def diminuir_matriz(matriz, jogada: tuple):
@@ -254,88 +284,3 @@ def diminuir_matriz(matriz, jogada: tuple):
                 nova_matriz[i][j] = matriz[linha_inicio + i][coluna_inicio + j]
     
         return nova_matriz
-  
-def vizinhanca(estado: list[list], i: int, j:int):
-        if i == 0 and j == 0:
-            if estado[i][j+1] != 0 or estado[i+1][j] != 0:
-                return True
-        elif i == 0 and j == len(estado[i])-1:
-            if estado[i][j-1] != 0 or estado[i+1][j] != 0:
-                return True
-        elif i == len(estado)-1 and j == 0:
-            if estado[i][j+1] != 0 or estado[i-1][j] != 0:
-                return True
-        elif i == len(estado)-1 and j == len(estado[i])-1:
-            if estado[i][j-1] != 0 or estado[i-1][j] != 0:
-                return True
-        elif i == 0:
-            if estado[i][j+1] != 0 or estado[i][j-1] != 0 or estado[i+1][j] != 0:
-                return True
-        elif i == len(estado)-1:
-            if estado[i][j+1] != 0 or estado[i][j-1] != 0 or estado[i-1][j] != 0:
-                return True
-        elif j == 0:
-            if estado[i][j+1] != 0 or estado[i+1][j] != 0 or estado[i-1][j] != 0:
-                return True
-        elif j == len(estado[i])-1:
-            if estado[i][j-1] != 0 or estado[i+1][j] != 0 or estado[i-1][j] != 0:
-                return True
-        else:
-            if estado[i][j+1] != 0 or estado[i][j-1] != 0 or estado[i+1][j] != 0 or estado[i-1][j] != 0:
-                return True
-        return False
-
-
-#Matrizes para testes
-matriz_teste = [
-    [1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
-    [0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0],
-    [0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0],
-    [0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
-    [0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-]
-
-# matriz_teste = [
-#     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-#     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-#     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-#     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-#     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-#     [0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0],
-#     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-#     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-#     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-#     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-#     [0, 0, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 0],
-#     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-#     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-#     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-# ]
-
-# estado_teste = [
-#     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-#     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-#     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-#     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-#     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-#     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-#     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-#     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-#     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-#     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-#     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-#     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-#     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-#     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-# ]
-
-obter_linhas_string(matriz_teste)
