@@ -1,5 +1,6 @@
 import regex
 import numpy as np
+import re
 
 #https://www.youtube.com/watch?v=FH9BxnzumVo
 def diagonal_principal(matriz: list[list]):
@@ -113,7 +114,16 @@ def obter_linhas_string(matriz: list[list]):
     linhas_string = []
     for item in tudo:
         linhas_string.append(''.join(str(num) for num in item))
-    return linhas_string
+
+    return remover_zeros(linhas_string)
+
+def remover_zeros(linhas_string):
+    linhas_sem_zero = []
+    for i in range(len(linhas_string)):
+        if not re.match("^[0]+$", linhas_string[i]):
+            linhas_sem_zero.append(linhas_string[i])
+
+    return linhas_sem_zero
 
 
 def calcular_pontuacao(estado: list[list], jogador: int):
@@ -255,22 +265,22 @@ def diminuir_matriz(matriz, jogada):
   
 
 #Matrizes para testes
-# matriz_teste = [
-#     [1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0],
-#     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-#     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
-#     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
-#     [0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
-#     [0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
-#     [0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0],
-#     [0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0],
-#     [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0],
-#     [0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
-#     [0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0],
-#     [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-#     [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0],
-#     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-# ]
+matriz_teste = [
+    [1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
+    [0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0],
+    [0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0],
+    [0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
+    [0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+]
 
 # matriz_teste = [
 #     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -306,5 +316,4 @@ def diminuir_matriz(matriz, jogada):
 #     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 # ]
 
-#print(type(estado_teste))
-#print(obter_linhas_string(estado_teste))
+obter_linhas_string(matriz_teste)
