@@ -140,13 +140,6 @@ def calcular_pontuacao(estado: list[list], jogador: int):
         return regex.calcular_pontuacao(lista_de_strings, regex.regras_jogador2)
 
 
-# def converter_coord(jogada, jogada_menor):
-#     x = jogada_menor[0] - 4
-#     y = jogada_menor[1] - 4
-#     x_jogada = jogada[0] + x
-#     y_jogada = jogada[1] + y
-#     return (x_jogada, y_jogada)
-
 def converter_coord(jogada, jogada_menor):
     if (jogada[0] - 4) <= 0:
         x = 0
