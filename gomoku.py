@@ -3,7 +3,7 @@ from sys import exit
 import numpy as np
 import copy
 from random import randint
-
+from minimax import Minimax
 import matrizes
 
 '''------------------------ MACROS DO JOGO ------------------------'''
@@ -37,7 +37,7 @@ class Tabuleiro:
     def __init__(self, linha, coluna):
         self.linha = linha
         self.coluna = coluna
-        self.matriz = np.zeros((linha,coluna))
+        self.matriz = np.zeros((linha,coluna), dtype=int)
         self.jogos = [] # Lista para guardas os estados do jogo
         self.pecas_brancas_desenhadas = []
         self.pecas_pretas_desenhadas = []
@@ -179,15 +179,15 @@ class Tabuleiro:
 
 
 class Jogo:
-    def __init__(self, tabuleiro, jogador1, jogador2):
+    def __init__(self, tabuleiro, jogador1, jogador2, minimax):
         self.tabuleiro = tabuleiro
         self.jogador1 = jogador1
         self.jogador2 = jogador2
+        self.minimax = minimax
+        self.jogadas_player = []
+        self.jogadas_minimax = []
 
-        # Sorteia quem será o primeiro jogador
-        if randint(0, 2) == 1:
-            self.jogador_atual = self.jogador1
-        else: self.jogador_atual = self.jogador2
+
 
         pygame.init() # Inicializa o Pygame
 
@@ -205,9 +205,12 @@ class Jogo:
             'opcoes_tabuleiros': 3,
             'opcoes_jogadores': 4,
             'jogar': 5,
-            'fim_jogo': 6
+            'jogar_pvp': 6,
+            'jogar_minimax' : 7,
+            'fim_jogo': 8
         }
 
+        self.adversario = self.jogo_status['jogar_pvp']
 
         self.indice_tabuleiro = 1
         self.indice_escolhe_tabuleiro = 1
@@ -295,9 +298,6 @@ class Jogo:
         self.fonte_jogadores_rect = self.fonte_jogadores.get_rect(center= (TELA_X / 2, TELA_Y / 2))
 
 
-    
-
-
 
     def iniciar_jogo(self):
 
@@ -343,10 +343,26 @@ class Jogo:
                     self.tela.blit(self.botao_player_vs_IA, self.botao_player_vs_IA_rect)
                     self.tabuleiro.animar_botao(self.botao_player_vs_IA, self.botao_player_vs_IA_rect, self.tela)
                     
+                    
                     # Verifica clique nos botões
                     pos = pygame.mouse.get_pos()
                     if event.type == pygame.MOUSEBUTTONDOWN:
-                        if self.botao_player_vs_player_rect.collidepoint(pos) or self.botao_player_vs_IA_rect.collidepoint(pos):
+                        if self.botao_player_vs_player_rect.collidepoint(pos):
+                            # Sorteia quem será o primeiro jogador
+                            if randint(0, 2) == 1:
+                                self.jogador_atual = self.jogador1
+                            else: self.jogador_atual = self.jogador2
+
+                            self.adversario = self.jogo_status['jogar_pvp']
+                            self.jogo_ativo = self.jogo_status['opcoes_menu3']
+
+                        if self.botao_player_vs_IA_rect.collidepoint(pos):
+                            # Sorteia quem será o primeiro jogador
+                            if randint(0, 2) == 1:
+                                self.jogador_atual = self.jogador2
+                            else: self.jogador_atual = self.minimax
+
+                            self.adversario = self.jogo_status['jogar_minimax']
                             self.jogo_ativo = self.jogo_status['opcoes_menu3']
 
                 #------------------------------ MENU 3 -------------------------------
@@ -461,35 +477,74 @@ class Jogo:
                 # ----------------------------- JOGAR ---------------------------------
                 elif self.jogo_ativo ==  self.jogo_status['jogar']:
 
+                    '''------------------------JOGAR PLAYER VS PLAYER--------------------------'''
+                    if self.adversario == self.jogo_status['jogar_pvp']:
+                        # Verifica clique nos vertices do tabuleiro para gerar uma jogada 
+                        if event.type == pygame.MOUSEBUTTONDOWN:
+                            if event.button == 1: # botão direito do mouse
 
-                    
+                                pos = pygame.mouse.get_pos()
+                                for linha in range(TABULEIRO_LARGURA):
+                                    for coluna in range(TABULEIRO_ALTURA):
+                                        if self.retangulos[linha][coluna].collidepoint(pos): # Verifica colisão do clique com os vértices
 
-                    
-                    # Verifica clique nos vertices do tabuleiro para gerar uma jogada 
-                    if event.type == pygame.MOUSEBUTTONDOWN:
-                        if event.button == 1: # botão direito do mouse
+                                            if self.tabuleiro.jogar(linha= coluna, coluna= linha, jogador= self.jogador_atual): # Efetua joga se for válida
 
-                            pos = pygame.mouse.get_pos()
-                            for linha in range(TABULEIRO_LARGURA):
-                                for coluna in range(TABULEIRO_ALTURA):
-                                    if self.retangulos[linha][coluna].collidepoint(pos): # Verifica colisão do clique com os vértices
+                                                self.tabuleiro.desenhar_peca(self.tela, linha, coluna, self.jogador_atual) # Desenha peça no local clicado
 
-                                        if self.tabuleiro.jogar(linha= coluna, coluna= linha, jogador= self.jogador_atual): # Efetua joga se for válida
+                                                if self.tabuleiro.verificar_se_ganhou(self.jogador_atual.num_peca): # Verifica se ganhou
+                                                    
+                                                    self.jogo_ativo = self.jogo_status['fim_jogo']
 
-                                            self.tabuleiro.desenhar_peca(self.tela, linha, coluna, self.jogador_atual) # Desenha peça no local clicado
-
-                                            if self.tabuleiro.verificar_se_ganhou(self.jogador_atual.num_peca): # Verifica se ganhou
-                                                
-                                                self.jogo_ativo = self.jogo_status['fim_jogo']
-
+                                                else:
+                                                    # Troca jogador
+                                                    self.jogador_atual = self.jogador2  if self.jogador_atual == self.jogador1 else self.jogador1
                                             else:
-                                                # Troca jogador
-                                                self.jogador_atual = self.jogador2  if self.jogador_atual == self.jogador1 else self.jogador1
-                                        else:
-                                            pass
-                                            # Colocar audio para indicar jogada invalida
-                                            # Colocar efeito visual para indicar jogada invalida       
-                                    
+                                                pass
+                                                # Colocar audio para indicar jogada invalida
+                                                # Colocar efeito visual para indicar jogada invalida 
+                                                      
+                    #------------------------JOGAR PLAYER VS MINIMAX--------------------------           
+                    elif self.adversario == self.jogo_status['jogar_minimax']:
+                        # Player Jogando
+                        if self.jogador_atual == self.jogador2:
+                            if event.type == pygame.MOUSEBUTTONDOWN:
+                                if event.button == 1: # botão direito do mouse
+                                    pos = pygame.mouse.get_pos()
+                                    for linha in range(TABULEIRO_LARGURA):
+                                        for coluna in range(TABULEIRO_ALTURA):
+                                            if self.retangulos[linha][coluna].collidepoint(pos): # Verifica colisão do clique com os vértices
+
+                                                if self.tabuleiro.jogar(linha= coluna, coluna= linha, jogador= self.jogador_atual): # Efetua joga se for válida
+                                                    self.tabuleiro.desenhar_peca(self.tela, linha, coluna, self.jogador_atual) #a Desenha peça no local clicado
+                                                    self.jogadas_player.append((coluna, linha))
+                                                    if self.tabuleiro.verificar_se_ganhou(self.jogador_atual.num_peca): # Verifica se ganhou
+                                                        self.jogo_ativo = self.jogo_status['fim_jogo']
+                                                    else:
+                                                        # Troca jogador
+                                                        self.jogador_atual = self.minimax  if self.jogador_atual == self.jogador2 else self.jogador2
+                        # Minimax Jogando
+                        elif self.jogador_atual == self.minimax:
+                            
+                            #jogar(self, estado, profundidade_max, jogadas_player, jogadas_minimax, ult_jogada):
+                            if len(self.jogadas_minimax) == 0:
+                                
+                                jogada_minimax = self.minimax.jogar(self.tabuleiro.matriz, 3, self.jogadas_player, self.jogadas_minimax, None, 1)
+                            else:
+                                
+                                jogada_minimax = self.minimax.jogar(self.tabuleiro.matriz, 3, self.jogadas_player, self.jogadas_minimax, self.jogadas_player[-1], 1)
+                            self.jogadas_minimax.append(jogada_minimax)
+                            print(f'Jogada Minimax: {jogada_minimax}')
+
+                            if self.tabuleiro.jogar(linha= jogada_minimax[0], coluna= jogada_minimax[1], jogador= self.jogador_atual): # Efetua jogada se for válida
+                                self.tabuleiro.desenhar_peca(self.tela, jogada_minimax[0], jogada_minimax[1], self.jogador_atual) # Desenha peça no local clicado
+
+                                if self.tabuleiro.verificar_se_ganhou(self.jogador_atual.num_peca): # Verifica se ganhou
+                                    self.jogo_ativo = self.jogo_status['fim_jogo']
+                                else:
+                                    # Troca jogador
+                                    print('Trocou')
+                                    self.jogador_atual = self.minimax  if self.jogador_atual == self.jogador2 else self.jogador2
 
 
                     self.tela.fill('#FFF8D1') # Pinta o fundo do tela
@@ -540,6 +595,8 @@ class Jogo:
 
                 # --------------------------- FIM DE JOGO ------------------------------
                 elif self.jogo_ativo == self.jogo_status['fim_jogo']:
+
+
                     superficie_transparente = pygame.Surface((TELA_X, TELA_Y), pygame.SRCALPHA)
 
                     # Preenche a superfície com uma cor com transparência
@@ -577,9 +634,9 @@ class Gomoku:
         self.tabuleiro = Tabuleiro(TABULEIRO_LARGURA, TABULEIRO_ALTURA)
         self.jogador1 = Jogador('Jogador 1','pretas')
         self.jogador2 = Jogador('Jogador 2','brancas')
-        self.computador = 0
+        self.minimax = Minimax('Minimax', 'pretas')
 
-        self.jogo = Jogo(self.tabuleiro, self.jogador1, self.jogador2)
+        self.jogo = Jogo(self.tabuleiro, self.jogador1, self.jogador2, self.minimax)
 
     
 if __name__ == "__main__":
