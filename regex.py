@@ -27,18 +27,23 @@ regras_jogador2 = {
 
 def calcular_pontuacao(lista_de_strings, regras): 
     pontuacao_total = 0
+    sem_match = []
     for string in lista_de_strings:
         for regra in regras.values():
-            for regex in regra['regex']:
-                # matches = re.findall(regex, string)
-                # if matches != []:
-                #     print (matches)
-                if re.findall(regex, string):
+            for regex in regra['regex']:    
+                matches = re.findall(regex, string)
+                if matches:      
+                    print(f'REGEX.PY/calcular_pontuacao -> string: {string}')
+                    print(f'REGEX.PY/calcular_pontuacao -> regra: {regex}')
+                    print(f'REGEX.PY/calcular_pontuacao -> Matches: {matches}')
+                    print(f"REGEX.PY/calcular_pontuacao -> Pontos: {regra['pontos']}")
                     pontuacao_total += regra['pontos'] 
+                    print(f"REGEX.PY/calcular_pontuacao -> Pontuação total: {pontuacao_total}") 
+                    print(" ")
+                else:
+                    sem_match.append(string)
     return pontuacao_total
 
-
-#print(calcular_pontuacao(matrizes.obter_linhas_string(matrizes.matriz_teste), regras))
 
 
 

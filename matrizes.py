@@ -117,6 +117,7 @@ def obter_linhas_string(matriz: list[list]):
 
     return remover_zeros(linhas_string)
 
+
 def remover_zeros(linhas_string):
     linhas_sem_zero = []
     for i in range(len(linhas_string)):
@@ -163,7 +164,7 @@ def converter_coord(jogada, jogada_menor):
 
 
 
-def diminuir_matriz(matriz, jogada):
+def diminuir_matriz(matriz, jogada: tuple):
     x = 4
     y = 4
     linha_inicio = 0
@@ -263,6 +264,36 @@ def diminuir_matriz(matriz, jogada):
     
         return nova_matriz
   
+def vizinhanca(estado: list[list], i: int, j:int):
+        if i == 0 and j == 0:
+            if estado[i][j+1] != 0 or estado[i+1][j] != 0:
+                return True
+        elif i == 0 and j == len(estado[i])-1:
+            if estado[i][j-1] != 0 or estado[i+1][j] != 0:
+                return True
+        elif i == len(estado)-1 and j == 0:
+            if estado[i][j+1] != 0 or estado[i-1][j] != 0:
+                return True
+        elif i == len(estado)-1 and j == len(estado[i])-1:
+            if estado[i][j-1] != 0 or estado[i-1][j] != 0:
+                return True
+        elif i == 0:
+            if estado[i][j+1] != 0 or estado[i][j-1] != 0 or estado[i+1][j] != 0:
+                return True
+        elif i == len(estado)-1:
+            if estado[i][j+1] != 0 or estado[i][j-1] != 0 or estado[i-1][j] != 0:
+                return True
+        elif j == 0:
+            if estado[i][j+1] != 0 or estado[i+1][j] != 0 or estado[i-1][j] != 0:
+                return True
+        elif j == len(estado[i])-1:
+            if estado[i][j-1] != 0 or estado[i+1][j] != 0 or estado[i-1][j] != 0:
+                return True
+        else:
+            if estado[i][j+1] != 0 or estado[i][j-1] != 0 or estado[i+1][j] != 0 or estado[i-1][j] != 0:
+                return True
+        return False
+
 
 #Matrizes para testes
 matriz_teste = [

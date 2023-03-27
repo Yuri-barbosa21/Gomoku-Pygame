@@ -86,36 +86,6 @@ class Minimax:
                     break
             return valor_min
 
-    def vizinhanca(self, estado, i, j):
-        if i == 0 and j == 0:
-            if estado[i][j+1] != 0 or estado[i+1][j] != 0:
-                return True
-        elif i == 0 and j == len(estado[i])-1:
-            if estado[i][j-1] != 0 or estado[i+1][j] != 0:
-                return True
-        elif i == len(estado)-1 and j == 0:
-            if estado[i][j+1] != 0 or estado[i-1][j] != 0:
-                return True
-        elif i == len(estado)-1 and j == len(estado[i])-1:
-            if estado[i][j-1] != 0 or estado[i-1][j] != 0:
-                return True
-        elif i == 0:
-            if estado[i][j+1] != 0 or estado[i][j-1] != 0 or estado[i+1][j] != 0:
-                return True
-        elif i == len(estado)-1:
-            if estado[i][j+1] != 0 or estado[i][j-1] != 0 or estado[i-1][j] != 0:
-                return True
-        elif j == 0:
-            if estado[i][j+1] != 0 or estado[i+1][j] != 0 or estado[i-1][j] != 0:
-                return True
-        elif j == len(estado[i])-1:
-            if estado[i][j-1] != 0 or estado[i+1][j] != 0 or estado[i-1][j] != 0:
-                return True
-        else:
-            if estado[i][j+1] != 0 or estado[i][j-1] != 0 or estado[i+1][j] != 0 or estado[i-1][j] != 0:
-                return True
-        return False
-
 
     def fazer_jogada_minimax(self, estado, jogador, profundidade_maxima, jogada):
         melhor_valor = float('-inf') if jogador == 1 else float('inf')
@@ -129,7 +99,7 @@ class Minimax:
         for i in range(len(estado_reduzido)):
             for j in range(len(estado_reduzido[i])):
                 
-                if estado_reduzido[i][j] == 0 and self.vizinhanca(estado, i, j):
+                if estado_reduzido[i][j] == 0 and matrizes.vizinhanca(estado, i, j):
                     novo_estado = copy.deepcopy(estado_reduzido)
                     novo_estado[i][j] = jogador
                     valor = self.minimax(novo_estado, profundidade_maxima-1, jogador, float("-inf"), float("inf"))
@@ -170,27 +140,25 @@ class Minimax:
     #     return melhor_jogada, melhor_coordenada
 
 
-
-
-
-    def verificar_jogada(self, matriz, jogada):
+    def verificar_jogada(self, matriz: list[list], jogada: tuple):
+        #Verifica se a jogada está dentro da matriz e se a posição está vazia
+        #Só funciona na matriz original (15x15)
         if jogada[0] < 0 or jogada[0] > 14:
             return False
         
         if jogada[1] < 0 or jogada[1] > 14:
             return False
 
-
         if matriz[jogada[0]][jogada[1]] == 0:
             return True
         else:
             return False
         
-    def heuristica(self, jogadas_player, jogadas_minimax, player_atual, matriz):
+
+    def heuristica(self, jogadas_player, jogadas_minimax, matriz):
         # FAZ A PRIMEIRA JOGADA DE TODAS NO CENTRO
         if len(jogadas_minimax) == 0 and len(jogadas_player) == 0:
-            #jogar(matriz, (7, 7), player_atual)
-            #print(f'Rodada ZERO: (7, 7)')
+            print(f'MINIMAX.PY/heuristica -> Rodada 1: (7, 7)')
             return ((7, 7))
 
         # FAZ A PRIMEIRA JOGADA EM VOLTA DA DA JOGADA DO PLAYER
@@ -202,7 +170,8 @@ class Minimax:
                 if self.verificar_jogada(matriz, (linha, coluna)):
                     JOGADAS_MINIMAX.append((linha, coluna))
                     break
-            #print(f'Rodada 2: {linha}, {coluna}')
+
+            print(f'Rodada 2: ({linha}, {coluna})')
             return ((linha, coluna))
         
         # FAZ A SEGUNDA JOGADA EM VOLTA DA DA JOGADA DO MINIMAX
@@ -214,7 +183,8 @@ class Minimax:
                 if self.verificar_jogada(matriz, (linha, coluna)):
                     JOGADAS_MINIMAX.append((linha, coluna))
                     break
-            #print(f'Rodada 3: {linha}, {coluna}')
+
+            print(f'MINIMAX.PY/heuristica -> Rodada 3: ({linha}, {coluna})')
             return ((linha, coluna))
 
         return False
