@@ -171,6 +171,21 @@ def vizinhanca(estado: list[list], i: int, j:int):
         return False
 
 
+def verificar_jogada(self, matriz: list[list], jogada: tuple):
+    #Verifica se a jogada está dentro da matriz e se a posição está vazia
+    #Só funciona na matriz original (15x15)
+    if jogada[0] < 0 or jogada[0] > 14:
+        return False
+    
+    if jogada[1] < 0 or jogada[1] > 14:
+        return False
+
+    if matriz[jogada[0]][jogada[1]] == 0:
+        return True
+    else:
+        return False
+       
+
 def converter_coord(jogada, jogada_menor):
     if (jogada[0] - 4) <= 0:
         x = 0
