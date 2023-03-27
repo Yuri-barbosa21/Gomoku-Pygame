@@ -171,7 +171,7 @@ def vizinhanca(estado: list[list], i: int, j:int):
         return False
 
 
-def verificar_jogada(self, matriz: list[list], jogada: tuple):
+def verificar_jogada(matriz: list[list], jogada: tuple):
     #Verifica se a jogada está dentro da matriz e se a posição está vazia
     #Só funciona na matriz original (15x15)
     if jogada[0] < 0 or jogada[0] > 14:
