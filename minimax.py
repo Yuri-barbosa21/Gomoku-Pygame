@@ -23,21 +23,6 @@ class Minimax:
         return filhos if filhos else [[]]
 
 
-    # def gerar_filhos(estado, jogador_atual):
-    #     filhos = []     
-    #     for i in range(len(estado)):
-    #         for j in range(len(estado[i])):
-    #             if estado[i][j] == 0:
-    #                 novo_estado = copy.deepcopy(estado) 
-    #                 novo_estado[i][j] = jogador_atual  
-    #                 filhos.append(novo_estado)
-    #             # if estado[i][j] == 0 and (estado[i+1][j] != 0 or estado[i-1][j] != 0 or estado[i][j+1] != 0 or estado[i][j-1] != 0):
-    #             #     novo_estado = copy.deepcopy(estado) 
-    #             #     novo_estado[i][j] = jogador_atual  
-    #             #     filhos.append(novo_estado)
-    #     return filhos
-
-
     def jogo_final(self, estado: list[list]):
         linhas_string = [''.join(str(num) for num in item) for item in estado]
         for item in linhas_string:
@@ -46,25 +31,8 @@ class Minimax:
         return not any(0 in linha for linha in estado)
 
 
-    # def jogo_final(estado: list[list]):
-    #     #tabuleiro_linear = matrizes.obter_linhas_string(estado)
-    #     linhas_string = []
-    #     for item in estado:
-    #         linhas_string.append(''.join(str(num) for num in item))
-
-    #     for item in linhas_string:
-    #         if re.search("11111", item) or re.search("22222", item):
-    #             return True
-    #         elif re.search("0+", item) is None:
-    #             return True
-    #     return False  
-
-
-
-
     def minimax(self, estado, profundidade, jogador , alpha, beta):
         if profundidade == 0 or self.jogo_final(estado):
-            #print(estado, type(estado))
             return self.valor_heuristico(estado, jogador)
 
         if jogador == 1:
@@ -99,7 +67,7 @@ class Minimax:
         for i in range(len(estado_reduzido)):
             for j in range(len(estado_reduzido[i])):
                 
-                if estado_reduzido[i][j] == 0 and matrizes.vizinhanca(estado, i, j):
+                if estado_reduzido[i][j] == 0 and matrizes.vizinhanca(estado_reduzido, i, j):
                     novo_estado = copy.deepcopy(estado_reduzido)
                     novo_estado[i][j] = jogador
                     valor = self.minimax(novo_estado, profundidade_maxima-1, jogador, float("-inf"), float("inf"))
@@ -112,32 +80,6 @@ class Minimax:
                         melhor_jogada = jogada
                         melhor_coordenada = (i, j)
         return melhor_jogada, melhor_coordenada
-
-
-
-    # def fazer_jogada_minimax(estado, jogador, profundidade_maxima, jogada):
-    #     melhor_valor = float('-inf') if jogador == 1 else float('inf')
-    #     melhor_jogada = None
-    #     melhor_coordenada = None
-    #     estado_reduzido = matrizes.diminuir_matriz(estado, jogada)
-    #     print(estado_reduzido)
-
-    #     for i in range(len(estado_reduzido)):
-    #         for j in range(len(estado_reduzido[i])):
-    #             if estado_reduzido[i][j] == 0:
-    #                 novo_estado = copy.deepcopy(estado_reduzido)
-    #                 novo_estado[i][j] = jogador
-    #                 valor = minimax(novo_estado, profundidade_maxima, jogador, float("-inf"), float("inf"))
-    #                 print(valor)
-    #                 if jogador == 1 and valor > melhor_valor:
-    #                     melhor_valor = valor
-    #                     melhor_jogada = jogada
-    #                     melhor_coordenada = (i, j)
-    #                 elif jogador == 2 and valor < melhor_valor:
-    #                     melhor_valor = valor
-    #                     melhor_jogada = jogada
-    #                     melhor_coordenada = (i, j)
-    #     return melhor_jogada, melhor_coordenada
 
 
     def verificar_jogada(self, matriz: list[list], jogada: tuple):
