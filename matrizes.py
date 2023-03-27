@@ -1,5 +1,6 @@
 import regex
 import numpy as np
+import re
 
 #https://www.youtube.com/watch?v=FH9BxnzumVo
 def diagonal_principal(matriz: list[list]):
@@ -113,7 +114,17 @@ def obter_linhas_string(matriz: list[list]):
     linhas_string = []
     for item in tudo:
         linhas_string.append(''.join(str(num) for num in item))
-    return linhas_string
+
+    return remover_zeros(linhas_string)
+
+
+def remover_zeros(linhas_string):
+    linhas_sem_zero = []
+    for i in range(len(linhas_string)):
+        if not re.match("^[0]+$", linhas_string[i]):
+            linhas_sem_zero.append(linhas_string[i])
+
+    return linhas_sem_zero
 
 
 def calcular_pontuacao(estado: list[list], jogador: int):
@@ -129,13 +140,6 @@ def calcular_pontuacao(estado: list[list], jogador: int):
         return regex.calcular_pontuacao(lista_de_strings, regex.regras_jogador2)
 
 
-# def converter_coord(jogada, jogada_menor):
-#     x = jogada_menor[0] - 4
-#     y = jogada_menor[1] - 4
-#     x_jogada = jogada[0] + x
-#     y_jogada = jogada[1] + y
-#     return (x_jogada, y_jogada)
-
 def converter_coord(jogada, jogada_menor):
     if (jogada[0] - 4) <= 0:
         x = 0
@@ -148,19 +152,17 @@ def converter_coord(jogada, jogada_menor):
         y = jogada[1] - 4
 
     resultado = (x + jogada_menor[0]), (y + jogada_menor[1])
-    print(resultado)
     return resultado
 
 
 
-def diminuir_matriz(matriz, jogada):
+def diminuir_matriz(matriz, jogada: tuple):
     x = 4
     y = 4
     linha_inicio = 0
     coluna_inicio = 0
     linha_fim = 0
     coluna_fim = 0
-    #nova_matriz = [[0 for j in range(linha_fim - linha_inicio)] for i in range(coluna_fim - coluna_inicio)]
     
     if jogada[0] + x > 14:
         linha_inicio = jogada[0] - x
@@ -253,24 +255,54 @@ def diminuir_matriz(matriz, jogada):
     
         return nova_matriz
   
+def vizinhanca(estado: list[list], i: int, j:int):
+        if i == 0 and j == 0:
+            if estado[i][j+1] != 0 or estado[i+1][j] != 0:
+                return True
+        elif i == 0 and j == len(estado[i])-1:
+            if estado[i][j-1] != 0 or estado[i+1][j] != 0:
+                return True
+        elif i == len(estado)-1 and j == 0:
+            if estado[i][j+1] != 0 or estado[i-1][j] != 0:
+                return True
+        elif i == len(estado)-1 and j == len(estado[i])-1:
+            if estado[i][j-1] != 0 or estado[i-1][j] != 0:
+                return True
+        elif i == 0:
+            if estado[i][j+1] != 0 or estado[i][j-1] != 0 or estado[i+1][j] != 0:
+                return True
+        elif i == len(estado)-1:
+            if estado[i][j+1] != 0 or estado[i][j-1] != 0 or estado[i-1][j] != 0:
+                return True
+        elif j == 0:
+            if estado[i][j+1] != 0 or estado[i+1][j] != 0 or estado[i-1][j] != 0:
+                return True
+        elif j == len(estado[i])-1:
+            if estado[i][j-1] != 0 or estado[i+1][j] != 0 or estado[i-1][j] != 0:
+                return True
+        else:
+            if estado[i][j+1] != 0 or estado[i][j-1] != 0 or estado[i+1][j] != 0 or estado[i-1][j] != 0:
+                return True
+        return False
+
 
 #Matrizes para testes
-# matriz_teste = [
-#     [1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0],
-#     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-#     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
-#     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
-#     [0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
-#     [0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
-#     [0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0],
-#     [0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0],
-#     [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0],
-#     [0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
-#     [0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0],
-#     [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-#     [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0],
-#     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-# ]
+matriz_teste = [
+    [1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
+    [0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0],
+    [0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0],
+    [0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
+    [0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+]
 
 # matriz_teste = [
 #     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -306,5 +338,4 @@ def diminuir_matriz(matriz, jogada):
 #     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 # ]
 
-#print(type(estado_teste))
-#print(obter_linhas_string(estado_teste))
+obter_linhas_string(matriz_teste)

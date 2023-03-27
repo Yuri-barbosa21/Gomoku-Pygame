@@ -1,107 +1,293 @@
-import minimax
-import numpy as np
+import matrizes, regex, minimax, regex_testes
 
-JOGADAS_MINIMAX = []
-JOGADAS_PLAYER = []
-
+#15x15
 ESTADO = [
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 ]
 
-# ESTADO = np.zeros((15,15), dtype=int)
-nova_matriz = np.zeros((15,15))
-print(type(nova_matriz))
-print(type(ESTADO))
+mini = minimax.Minimax("Minimax", "Brancas")
 
-#JOGADA PLAYER
-ESTADO[4][4] = 2
-JOGADAS_PLAYER.append((4, 4))
-print(f'Jogada PLAYER: {4}, {4}')
-for linha in ESTADO:
-    print(linha)
-print('\n\n')
+#Parte do jogo
+jogadas_player = []
+jogadas_minimax = []
 
-#JOGADA MINIMAX
-jogada = minimax.jogar(ESTADO, 3, JOGADAS_PLAYER, JOGADAS_MINIMAX, (4,4))
-JOGADAS_MINIMAX.append(jogada)
-ESTADO[jogada[0]][jogada[1]] = 1
-for linha in ESTADO:
-    print(linha)
-print('\n\n')
-
-#JOGADA PLAYER
-ESTADO[3][4] = 2
-JOGADAS_PLAYER.append((3, 4))
-print(f'Jogada PLAYER: {3}, {4}')
-for linha in ESTADO:
-    print(linha)
-print('\n\n')
-
-#JOGADA MINIMAX
-jogada = minimax.jogar(ESTADO, 3, JOGADAS_PLAYER, JOGADAS_MINIMAX, (3,4))
-JOGADAS_MINIMAX.append(jogada)
-ESTADO[jogada[0]][jogada[1]] = 1
-for linha in ESTADO:
-    print(linha)
-print('\n\n')
-
-#JOGADA PLAYER
-ESTADO[5][5] = 2
-JOGADAS_PLAYER.append((5, 5))
-print(f'Jogada PLAYER: {5}, {5}')
-for linha in ESTADO:
-    print(linha)
-print('\n\n')
-
-#ATÉ AQUI FUNCIONA
-
-# print(JOGADAS_PLAYER)
-# print(JOGADAS_MINIMAX)
-
-#JOGADA MINIMAX
-jogada = minimax.jogar(ESTADO, 3, JOGADAS_PLAYER, JOGADAS_MINIMAX, (5,5))
-JOGADAS_MINIMAX.append(jogada)
-print(jogada)
-ESTADO[jogada[0]][jogada[1]] = 1
-for linha in ESTADO:
-    print(linha)
-print('\n\n')
+#Tamanho da matriz
+print(f'Tamanho da matriz: {len(ESTADO)}x{len(ESTADO[0])}')
 
 
-#JOGADA PLAYER
-ESTADO[8][7] = 1
-JOGADAS_MINIMAX.append((8, 7))
-ESTADO[8][6] = 1
-JOGADAS_MINIMAX.append((8, 6))
-ESTADO[8][5] = 1
-JOGADAS_MINIMAX.append((8, 5))
-ESTADO[8][4] = 1
-JOGADAS_MINIMAX.append((8, 4))
+#====================================================================================================
+#Testes de verficar jogadas
+#====================================================================================================
 
-ESTADO[9][7] = 2
-JOGADAS_PLAYER.append((9, 7))
+print("INICIO DE TESTES DE JOGADAS VÁLIDAS E INVÁLIDAS")
+print(" ")
 
-for linha in ESTADO:
-    print(linha)
-print('\n\n')
+#Jogada válida
+jogada_verificar_linha = 0
+jogada_verificar_coluna = 14
+print(f'A jogada ({jogada_verificar_linha}, {jogada_verificar_coluna}) é {mini.verificar_jogada(ESTADO, (jogada_verificar_linha, jogada_verificar_coluna))}')
+print(" ")
 
-jogada = minimax.jogar(ESTADO, 2, JOGADAS_PLAYER, JOGADAS_MINIMAX, (9, 7))
-JOGADAS_MINIMAX.append(jogada)
-print(jogada)
-ESTADO[jogada[0]][jogada[1]] = 1
-for linha in ESTADO:
-    print(linha)
-print('\n\n')
+#Jogada inválida (SE (0, 0) for 1)
+jogada_verificar_linha = 0
+jogada_verificar_coluna = 0
+print(f'A jogada ({jogada_verificar_linha}, {jogada_verificar_coluna}) é {mini.verificar_jogada(ESTADO, (jogada_verificar_linha, jogada_verificar_coluna))} <- (0, 0) != 0')
+print(" ")
+
+#====================================================================================================
+#Testes da Heurística
+#====================================================================================================
+
+#Limpar a matriz para testes limpos
+ESTADO[0][0] = 0
+
+##Jogada do minimax
+
+print("INICIO DOS TESTES DE HEURÍSTICA")
+print("")
+
+#Deve retornar (7,7) pois é a primeira jogada da partida e é a vez do minimax
+jogada_1_minimax = mini.heuristica(jogadas_player, jogadas_minimax, ESTADO)
+print(" ")
+
+#Registro da jogada do Minimax e atualização do estado
+jogadas_minimax.append(jogada_1_minimax)
+ESTADO[jogada_1_minimax[0]][jogada_1_minimax[1]] = 1
+
+#for linha in ESTADO: print(linha)
+#print(" ")
+
+print(f'Jogadas do Minimax: {jogadas_minimax}')
+print(f'Jogadas do Player: {jogadas_player}')
+print(" ")
+
+##Jogada do player
+
+jogadas_player.append((6, 6))
+ESTADO[6][6] = 2
+
+#for linha in ESTADO: print(linha)
+
+print(f'Jogadas do Minimax: {jogadas_minimax}')
+print(f'Jogadas do Player: {jogadas_player}')
+print(" ")
+
+
+##Jogada do minimax
+
+jogada_2_minimax = mini.heuristica(jogadas_player, jogadas_minimax, ESTADO)
+print(" ")
+
+#Registro da jogada do Minimax e atualização do estado
+jogadas_minimax.append(jogada_2_minimax)
+ESTADO[jogada_2_minimax[0]][jogada_2_minimax[1]] = 1
+
+#for linha in ESTADO: print(linha)
+
+print(f'Jogadas do Minimax: {jogadas_minimax}')
+print(f'Jogadas do Player: {jogadas_player}')
+print(" ")
+
+##Jogada do player
+
+jogadas_player.append((7, 6))
+ESTADO[7][6] = 2
+
+#for linha in ESTADO: print(linha)
+
+print(f'Jogadas do Minimax: {jogadas_minimax}')
+print(f'Jogadas do Player: {jogadas_player}')
+print(" ")
+
+#====================================================================================================
+#Testes Matriz Reduzida
+#====================================================================================================
+
+print("INÍCIO TESTES MATRIZ REDUZIDA")
+print(" ")
+
+##Teste da reduzida
+
+#estado_reduzido = matrizes.diminuir_matriz(ESTADO, jogadas_player[(len(jogadas_player) - 1)])
+estado_reduzido = matrizes.diminuir_matriz(ESTADO, jogadas_minimax[(len(jogadas_minimax) - 1)])
+print("Estado reduzido:")
+for linha in estado_reduzido: print(linha)
+print(" ")
+
+#====================================================================================================
+#Testes de Vizinhança
+#====================================================================================================
+
+print("INÍCIO TESTES VIZINHANÇA")
+print(" ")
+
+##Teste da vizinhança 
+
+def teste_vizinhanca(estado):
+    jogadas_possiveis = []
+    for i in range(len(estado)):
+        for j in range(len(estado[i])):
+               if estado[i][j] == 0 and matrizes.vizinhanca(estado, i, j):
+                     jogadas_possiveis.append((i, j))
+    print("Jogadas possíveis pela vizinhança:")
+    for line in jogadas_possiveis: print(line)
+    print(" ")
+    return jogadas_possiveis
+                    
+teste_vizinhanca(estado_reduzido)
+
+#====================================================================================================
+#Comparação de vizinhança completa e reduzida
+#====================================================================================================
+
+print("INÍCIO COMPARAÇÃO VIZINHANÇA COMPLETA E REDUZIDA")
+print(" ")
+
+import time
+
+#Vizinhança completa:
+print("Vizinhança completa:")
+inicio_completa = time.time()
+vizinhança_completa = teste_vizinhanca(ESTADO)
+tempo_completa = time.time() - inicio_completa
+
+#Vizinhança reduzida:
+print("Vizinhança reduzida:")
+inicio_reduzida = time.time()
+estado_reduzido_tempo = matrizes.diminuir_matriz(ESTADO, jogadas_minimax[(len(jogadas_minimax) - 1)])
+vizinhança_reduzida = teste_vizinhanca(estado_reduzido_tempo)
+tempo_reduzida = time.time() - inicio_reduzida
+
+print("COMPARAÇÃO DE TEMPO DE EXEXUÇÃO DA VIZINHANÇA COMPLETA E REDUZIDA")
+print(" ") 
+
+print(f'Tempo de execução da vizinhança completa: {tempo_completa}')
+print(f'Tempo de execução da vizinhança reduzida: {tempo_reduzida}')
+print(f'Diferença de tempo: {tempo_completa - tempo_reduzida}')
+
+#====================================================================================================
+#Teste da remoção de zeros
+#====================================================================================================
+
+print("INÍCIO TESTES REMOÇÃO DE ZEROS")
+print(" ")
+
+##Teste da remoção de zeros
+
+teste_remover_zeros = matrizes.obter_linhas_string(ESTADO)
+
+print("Estado atual")
+for linha in ESTADO: print(linha)
+print("")
+
+print("obter_linhas_string sem os zeros:")
+for line in teste_remover_zeros: print(line)
+print("")
+
+#====================================================================================================
+#Teste cálculo de valor heurístico
+#====================================================================================================
+
+print("INÍCIO TESTES CÁLCULO DE VALOR HEURÍSTICO")
+print(" ")
+
+##Teste do cálculo de valor heurístico
+
+print("Estado atual")
+for linha in ESTADO: print(linha)
+print("")
+
+##Teste do Regex
+print("Cálculo do valor heurístico pelo REGEX")
+
+#Todas as direções após remoção dos zeros
+print("Todas as direções após remoção dos zeros")
+linhas_estado_sem_zeros = matrizes.obter_linhas_string(ESTADO)
+for linha in linhas_estado_sem_zeros: print(linha)
+print("")
+
+#Cálculo do valor heurístico no REGEX
+print("String, regras e matches")
+valor_teste_1 = regex_testes.calcular_pontuacao(linhas_estado_sem_zeros, regex_testes.regras_jogador1)
+print(f'Valor heurístico do estado atual para o jogador 1: {valor_teste_1}')
+print(" ")
+
+#Calculo do valor heurístico pelas matrizes
+print("Cálculo do valor heurístico pelas matrizes")
+valor_teste_2 = matrizes.calcular_pontuacao(ESTADO, 1)
+print(f'Valor heurístico do estado atual para o jogador 1: {valor_teste_2}')
+print(" ")
+
+#Comparação dos resultados
+print(f"Diferença na pontuação: {valor_teste_1 - valor_teste_2}")
+
+#====================================================================================================
+#Teste gerar filhos
+#====================================================================================================
+
+print("INÍCIO TESTES GERAR FILHOS")
+print(" ")
+
+print("Estado atual")
+for linha in ESTADO: print(linha)
+print("")
+
+filhos1 = mini.gerar_filhos(ESTADO, 1)
+
+print("Filhos gerados sem heurística:")
+print(len(filhos1))
+print("")
+
+print("Filhos gerados com heurística:")
+contagem_filhos_heuristica = 0
+for i in range(len(ESTADO)):
+    for j in range(len(ESTADO[i])):
+        if ESTADO[i][j] == 0 and matrizes.vizinhanca(ESTADO, i, j):
+            print(f'Coordenada passível de filho: {i, j}')
+            contagem_filhos_heuristica += 1
+print("")
+print(f'Número de filhos gerados: {contagem_filhos_heuristica}')
+print("")
+
+#====================================================================================================
+#Teste jogada minimax
+#====================================================================================================
+
+print("INÍCIO TESTES JOGADA MINIMAX")
+print("")
+
+print("Estado atual")
+for linha in ESTADO: print(linha)
+print("")
+
+coordenada_minimax = mini.fazer_jogada_minimax(ESTADO, 1, 3, jogadas_player[len(jogadas_player) - 1])
+print(f'Coordenada minimax original: {coordenada_minimax}')
+print(f'Coordenada minimax convertida: {matrizes.converter_coord(coordenada_minimax, jogadas_player[len(jogadas_player) - 1])}')
+print("")
+
+#====================================================================================================
+#Teste minimax.jogar
+#====================================================================================================
+
+print("INÍCIO TESTES MINIMAX.JOGAR")
+print("")
+
+print("Estado atual")
+for linha in ESTADO: print(linha)
+print("")
+
+
