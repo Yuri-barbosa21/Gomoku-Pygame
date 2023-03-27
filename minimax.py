@@ -58,17 +58,11 @@ class Minimax:
     def fazer_jogada_minimax(self, estado, jogador, profundidade_maxima, jogada):
         melhor_valor = float('-inf') if jogador == 1 else float('inf')
         melhor_coordenada = None
-        estado_reduzido = matrizes.diminuir_matriz(estado, jogada)
-        print("Estado reduzido:")
-        for linha in estado_reduzido:
-            print(linha)
-        print(" ")
 
-        for i in range(len(estado_reduzido)):
-            for j in range(len(estado_reduzido[i])):
-                
-                if estado_reduzido[i][j] == 0 and matrizes.vizinhanca(estado_reduzido, i, j):
-                    novo_estado = copy.deepcopy(estado_reduzido)
+        for i in range(len(estado)):
+            for j in range(len(estado[i])):
+                if estado[i][j] == 0 and matrizes.vizinhanca(estado, i, j):
+                    novo_estado = copy.deepcopy(estado)
                     novo_estado[i][j] = jogador
                     valor = self.minimax(novo_estado, profundidade_maxima-1, jogador, float("-inf"), float("inf"))
                     if jogador == 1 and valor > melhor_valor:
@@ -78,22 +72,7 @@ class Minimax:
                         melhor_valor = valor
                         melhor_coordenada = (i, j)
         return melhor_coordenada
-
-
-    def verificar_jogada(self, matriz: list[list], jogada: tuple):
-        #Verifica se a jogada está dentro da matriz e se a posição está vazia
-        #Só funciona na matriz original (15x15)
-        if jogada[0] < 0 or jogada[0] > 14:
-            return False
-        
-        if jogada[1] < 0 or jogada[1] > 14:
-            return False
-
-        if matriz[jogada[0]][jogada[1]] == 0:
-            return True
-        else:
-            return False
-        
+ 
 
     def heuristica(self, jogadas_player, jogadas_minimax, matriz):
         # FAZ A PRIMEIRA JOGADA DE TODAS NO CENTRO
@@ -107,7 +86,7 @@ class Minimax:
                 linha = random.randint(jogadas_player[0][0] - 1, jogadas_player[0][0] + 1)
                 coluna = random.randint(jogadas_player[0][1] - 1, jogadas_player[0][1] + 1)
 
-                if self.verificar_jogada(matriz, (linha, coluna)):
+                if matrizes.verificar_jogada(matriz, (linha, coluna)):
                     JOGADAS_MINIMAX.append((linha, coluna))
                     break
 
@@ -120,7 +99,7 @@ class Minimax:
                 linha = random.randint(jogadas_minimax[0][0] - 1, jogadas_minimax[0][0] + 1)
                 coluna = random.randint(jogadas_minimax[0][1] - 1, jogadas_minimax[0][1] + 1)
 
-                if self.verificar_jogada(matriz, (linha, coluna)):
+                if matrizes.verificar_jogada(matriz, (linha, coluna)):
                     JOGADAS_MINIMAX.append((linha, coluna))
                     break
 
