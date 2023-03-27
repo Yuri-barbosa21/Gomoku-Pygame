@@ -274,20 +274,22 @@ print("Estado atual")
 for linha in ESTADO: print(linha)
 print("")
 
+inicio_coord_minimax = time.time()
 coordenada_minimax = mini.fazer_jogada_minimax(ESTADO, 1, 3, jogadas_player[len(jogadas_player) - 1])
+tempo_coord_minimax = time.time() - inicio_coord_minimax
 print(f'Coordenada minimax original: {coordenada_minimax}')
-print(f'Coordenada minimax convertida: {matrizes.converter_coord(coordenada_minimax, jogadas_player[len(jogadas_player) - 1])}')
+print(f'Tempo de execução: {tempo_coord_minimax}')
 print("")
 
 #====================================================================================================
 #Teste minimax.jogar
 #====================================================================================================
 
-print("INÍCIO TESTES MINIMAX.JOGAR")
-print("")
+# print("INÍCIO TESTES MINIMAX.JOGAR")
+# print("")
 
-print("Estado atual")
-for linha in ESTADO: print(linha)
-print("")
+# print("Estado atual")
+# for linha in ESTADO: print(linha)
+# print("")
 
 
