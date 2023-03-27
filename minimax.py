@@ -57,12 +57,12 @@ class Minimax:
 
     def fazer_jogada_minimax(self, estado, jogador, profundidade_maxima, jogada):
         melhor_valor = float('-inf') if jogador == 1 else float('inf')
-        melhor_jogada = None
         melhor_coordenada = None
         estado_reduzido = matrizes.diminuir_matriz(estado, jogada)
+        print("Estado reduzido:")
         for linha in estado_reduzido:
             print(linha)
-        print('\n\n')
+        print(" ")
 
         for i in range(len(estado_reduzido)):
             for j in range(len(estado_reduzido[i])):
@@ -73,13 +73,11 @@ class Minimax:
                     valor = self.minimax(novo_estado, profundidade_maxima-1, jogador, float("-inf"), float("inf"))
                     if jogador == 1 and valor > melhor_valor:
                         melhor_valor = valor
-                        melhor_jogada = jogada
                         melhor_coordenada = (i, j)
                     elif jogador == 2 and valor < melhor_valor:
                         melhor_valor = valor
-                        melhor_jogada = jogada
                         melhor_coordenada = (i, j)
-        return melhor_jogada, melhor_coordenada
+        return melhor_coordenada
 
 
     def verificar_jogada(self, matriz: list[list], jogada: tuple):
