@@ -140,121 +140,6 @@ def calcular_pontuacao(estado: list[list], jogador: int):
         return regex.calcular_pontuacao(lista_de_strings, regex.regras_jogador2)
 
 
-def converter_coord(jogada, jogada_menor):
-    if (jogada[0] - 4) <= 0:
-        x = 0
-    else:
-        x = jogada[0] - 4
-
-    if (jogada[1] - 4) <= 0:
-        y = 0
-    else:
-        y = jogada[1] - 4
-
-    resultado = (x + jogada_menor[0]), (y + jogada_menor[1])
-    return resultado
-
-
-
-def diminuir_matriz(matriz, jogada: tuple):
-    x = 4
-    y = 4
-    linha_inicio = 0
-    coluna_inicio = 0
-    linha_fim = 0
-    coluna_fim = 0
-    
-    if jogada[0] + x > 14:
-        linha_inicio = jogada[0] - x
-        linha_fim = 15
-
-        if jogada[1] + y > 14:
-            coluna_inicio = jogada[1] - y
-            coluna_fim = 15
-
-        if jogada[1] < y:
-            coluna_inicio = 0
-            coluna_fim = jogada[1] + y + 1
-        
-        # print(linha_inicio, linha_fim)
-        # print(linha_inicio, linha_fim)
-
-        # print(linha_fim - linha_inicio)
-        # print(coluna_fim - coluna_inicio)
-
-        nova_matriz = np.zeros((linha_fim - linha_inicio, coluna_fim - coluna_inicio), dtype=int).tolist()
-        #nova_matriz = [[0 for j in range(linha_fim - linha_inicio)] for i in range(coluna_fim - coluna_inicio)]
-
-        for i in range(linha_fim - linha_inicio):
-            for j in range(coluna_fim - coluna_inicio):
-                nova_matriz[i][j] = matriz[linha_inicio + i][coluna_inicio + j]
-        return nova_matriz
-
-    if jogada[0] > x:
-        linha_inicio = jogada[0] - x
-        linha_fim = jogada[0] + x + 1
-        
-
-        if jogada[0] + x > 14:
-            linha_inicio = jogada[0] - x
-            linha_fim = 15
-
-        if jogada[1] < y:
-         coluna_inicio = 0
-         coluna_fim = jogada[1] + y + 1
-
-        if jogada[1] > y:
-            coluna_inicio = jogada[1] - y
-            coluna_fim = jogada[1] + y + 1
-
-        if jogada[1] + y > 14:
-            coluna_inicio = jogada[1] - y
-            coluna_fim = 15
-
-        # print(linha_inicio, linha_fim)
-        # print(coluna_inicio, coluna_fim)
-
-        nova_matriz = np.zeros((linha_fim - linha_inicio, coluna_fim - coluna_inicio), dtype=int).tolist()
-        #nova_matriz = [[0 for j in range(linha_fim - linha_inicio)] for i in range(coluna_fim - coluna_inicio)]
-
-        for i in range(linha_fim - linha_inicio):
-            for j in range(coluna_fim - coluna_inicio):
-                nova_matriz[i][j] = matriz[linha_inicio + i][coluna_inicio + j]
-    
-        return nova_matriz
-
-    # SE A JOGADA LINHA FOR MENOR QUE O TAMANHO DA MATRIZ
-    if jogada[0] <= x:
-        linha_inicio = 0
-        linha_fim = jogada[0] + x + 1
-        
-        # SE A JOGADA COLUNA FOR MENOR QUE O TAMANHO DA MATRIZ
-        if jogada[1] < y:
-         coluna_inicio = 0
-         coluna_fim = jogada[1] + y + 1
-
-        if jogada[1] > y:
-            coluna_inicio = jogada[1] - y
-            coluna_fim = jogada[1] + y + 1
-
-        if jogada[1] + y > 14:
-            coluna_inicio = jogada[1] - y
-            coluna_fim = 15
-
-        # print(linha_inicio, linha_fim)
-        # print(coluna_inicio, coluna_fim)
-
-        # CRIA UMA MATRIZ COM O TAMANHO DA LINHA E COLUNA
-        #nova_matriz = np.zeros((linha_fim - linha_inicio, coluna_fim - coluna_inicio))
-        #nova_matriz = [[0 for j in range(linha_fim - linha_inicio)] for i in range(coluna_fim - coluna_inicio)]
-        nova_matriz = np.zeros((linha_fim - linha_inicio, coluna_fim - coluna_inicio), dtype=int).tolist()
-
-        for i in range(linha_fim - linha_inicio):
-            for j in range(coluna_fim - coluna_inicio):
-                nova_matriz[i][j] = matriz[linha_inicio + i][coluna_inicio + j]
-    
-        return nova_matriz
-  
 def vizinhanca(estado: list[list], i: int, j:int):
         if i == 0 and j == 0:
             if estado[i][j+1] != 0 or estado[i+1][j] != 0:
@@ -286,56 +171,114 @@ def vizinhanca(estado: list[list], i: int, j:int):
         return False
 
 
-#Matrizes para testes
-matriz_teste = [
-    [1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
-    [0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0],
-    [0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0],
-    [0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
-    [0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-]
+def verificar_jogada(matriz: list[list], jogada: tuple):
+    #Verifica se a jogada está dentro da matriz e se a posição está vazia
+    #Só funciona na matriz original (15x15)
+    if jogada[0] < 0 or jogada[0] > 14:
+        return False
+    
+    if jogada[1] < 0 or jogada[1] > 14:
+        return False
 
-# matriz_teste = [
-#     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-#     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-#     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-#     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-#     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-#     [0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0],
-#     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-#     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-#     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-#     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-#     [0, 0, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 0],
-#     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-#     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-#     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-# ]
+    if matriz[jogada[0]][jogada[1]] == 0:
+        return True
+    else:
+        return False
+       
 
-# estado_teste = [
-#     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-#     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-#     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-#     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-#     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-#     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-#     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-#     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-#     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-#     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-#     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-#     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-#     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-#     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-# ]
+def converter_coord(jogada, jogada_menor):
+    if (jogada[0] - 4) <= 0:
+        x = 0
+    else:
+        x = jogada[0] - 4
 
-obter_linhas_string(matriz_teste)
+    if (jogada[1] - 4) <= 0:
+        y = 0
+    else:
+        y = jogada[1] - 4
+
+    resultado = (x + jogada_menor[0]), (y + jogada_menor[1])
+    return resultado
+
+
+def diminuir_matriz(matriz, jogada: tuple):
+    x = 4
+    y = 4
+    linha_inicio = 0
+    coluna_inicio = 0
+    linha_fim = 0
+    coluna_fim = 0
+    
+    if jogada[0] + x > 14:
+        linha_inicio = jogada[0] - x
+        linha_fim = 15
+
+        if jogada[1] + y > 14:
+            coluna_inicio = jogada[1] - y
+            coluna_fim = 15
+
+        if jogada[1] < y:
+            coluna_inicio = 0
+            coluna_fim = jogada[1] + y + 1
+        
+        nova_matriz = np.zeros((linha_fim - linha_inicio, coluna_fim - coluna_inicio), dtype=int).tolist()
+        for i in range(linha_fim - linha_inicio):
+            for j in range(coluna_fim - coluna_inicio):
+                nova_matriz[i][j] = matriz[linha_inicio + i][coluna_inicio + j]
+        return nova_matriz
+
+    if jogada[0] > x:
+        linha_inicio = jogada[0] - x
+        linha_fim = jogada[0] + x + 1
+        
+
+        if jogada[0] + x > 14:
+            linha_inicio = jogada[0] - x
+            linha_fim = 15
+
+        if jogada[1] < y:
+         coluna_inicio = 0
+         coluna_fim = jogada[1] + y + 1
+
+        if jogada[1] > y:
+            coluna_inicio = jogada[1] - y
+            coluna_fim = jogada[1] + y + 1
+
+        if jogada[1] + y > 14:
+            coluna_inicio = jogada[1] - y
+            coluna_fim = 15
+
+        nova_matriz = np.zeros((linha_fim - linha_inicio, coluna_fim - coluna_inicio), dtype=int).tolist()
+
+        for i in range(linha_fim - linha_inicio):
+            for j in range(coluna_fim - coluna_inicio):
+                nova_matriz[i][j] = matriz[linha_inicio + i][coluna_inicio + j]
+    
+        return nova_matriz
+
+    # SE A JOGADA LINHA FOR MENOR QUE O TAMANHO DA MATRIZ
+    if jogada[0] <= x:
+        linha_inicio = 0
+        linha_fim = jogada[0] + x + 1
+        
+        # SE A JOGADA COLUNA FOR MENOR QUE O TAMANHO DA MATRIZ
+        if jogada[1] < y:
+         coluna_inicio = 0
+         coluna_fim = jogada[1] + y + 1
+
+        if jogada[1] > y:
+            coluna_inicio = jogada[1] - y
+            coluna_fim = jogada[1] + y + 1
+
+        if jogada[1] + y > 14:
+            coluna_inicio = jogada[1] - y
+            coluna_fim = 15
+            
+        # CRIA UMA MATRIZ COM O TAMANHO DA LINHA E COLUNA
+        nova_matriz = np.zeros((linha_fim - linha_inicio, coluna_fim - coluna_inicio), dtype=int).tolist()
+
+        for i in range(linha_fim - linha_inicio):
+            for j in range(coluna_fim - coluna_inicio):
+                nova_matriz[i][j] = matriz[linha_inicio + i][coluna_inicio + j]
+    
+        return nova_matriz

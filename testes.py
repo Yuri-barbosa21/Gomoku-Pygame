@@ -39,13 +39,13 @@ print(" ")
 #Jogada válida
 jogada_verificar_linha = 0
 jogada_verificar_coluna = 14
-print(f'A jogada ({jogada_verificar_linha}, {jogada_verificar_coluna}) é {mini.verificar_jogada(ESTADO, (jogada_verificar_linha, jogada_verificar_coluna))}')
+print(f'A jogada ({jogada_verificar_linha}, {jogada_verificar_coluna}) é {matrizes.verificar_jogada(ESTADO, (jogada_verificar_linha, jogada_verificar_coluna))}')
 print(" ")
 
 #Jogada inválida (SE (0, 0) for 1)
 jogada_verificar_linha = 0
 jogada_verificar_coluna = 0
-print(f'A jogada ({jogada_verificar_linha}, {jogada_verificar_coluna}) é {mini.verificar_jogada(ESTADO, (jogada_verificar_linha, jogada_verificar_coluna))} <- (0, 0) != 0')
+print(f'A jogada ({jogada_verificar_linha}, {jogada_verificar_coluna}) é {matrizes.verificar_jogada(ESTADO, (jogada_verificar_linha, jogada_verificar_coluna))} <- (0, 0) != 0')
 print(" ")
 
 #====================================================================================================
@@ -274,20 +274,22 @@ print("Estado atual")
 for linha in ESTADO: print(linha)
 print("")
 
+inicio_coord_minimax = time.time()
 coordenada_minimax = mini.fazer_jogada_minimax(ESTADO, 1, 3, jogadas_player[len(jogadas_player) - 1])
+tempo_coord_minimax = time.time() - inicio_coord_minimax
 print(f'Coordenada minimax original: {coordenada_minimax}')
-print(f'Coordenada minimax convertida: {matrizes.converter_coord(coordenada_minimax, jogadas_player[len(jogadas_player) - 1])}')
+print(f'Tempo de execução: {tempo_coord_minimax}')
 print("")
 
 #====================================================================================================
 #Teste minimax.jogar
 #====================================================================================================
 
-print("INÍCIO TESTES MINIMAX.JOGAR")
-print("")
+# print("INÍCIO TESTES MINIMAX.JOGAR")
+# print("")
 
-print("Estado atual")
-for linha in ESTADO: print(linha)
-print("")
+# print("Estado atual")
+# for linha in ESTADO: print(linha)
+# print("")
 
 
