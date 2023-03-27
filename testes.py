@@ -274,6 +274,20 @@ print("Estado atual")
 for linha in ESTADO: print(linha)
 print("")
 
-jogada_minimax, coordenada_minimax = mini.fazer_jogada_minimax(ESTADO, 1, 2, jogadas_player[len(jogadas_player) - 1])
-print(f'Jogada na matriz original: {jogada_minimax}')
-print(f'Jogada na matriz reduzida: {coordenada_minimax}')
+coordenada_minimax = mini.fazer_jogada_minimax(ESTADO, 1, 3, jogadas_player[len(jogadas_player) - 1])
+print(f'Coordenada minimax original: {coordenada_minimax}')
+print(f'Coordenada minimax convertida: {matrizes.converter_coord(coordenada_minimax, jogadas_player[len(jogadas_player) - 1])}')
+print("")
+
+#====================================================================================================
+#Teste minimax.jogar
+#====================================================================================================
+
+print("INÍCIO TESTES MINIMAX.JOGAR")
+print("")
+
+print("Estado atual")
+for linha in ESTADO: print(linha)
+print("")
+
+
