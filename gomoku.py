@@ -529,10 +529,10 @@ class Jogo:
                             #jogar(self, estado, profundidade_max, jogadas_player, jogadas_minimax, ult_jogada):
                             if len(self.jogadas_minimax) == 0:
                                 
-                                jogada_minimax = self.minimax.jogar(self.tabuleiro.matriz, 3, self.jogadas_player, self.jogadas_minimax, None, 1)
+                                jogada_minimax = self.minimax.jogar(self.tabuleiro.matriz, 2, self.jogadas_player, self.jogadas_minimax, None, 1)
                             else:
                                 
-                                jogada_minimax = self.minimax.jogar(self.tabuleiro.matriz, 3, self.jogadas_player, self.jogadas_minimax, self.jogadas_player[-1], 1)
+                                jogada_minimax = self.minimax.jogar(self.tabuleiro.matriz, 2, self.jogadas_player, self.jogadas_minimax, self.jogadas_player[-1], 1)
                             self.jogadas_minimax.append(jogada_minimax)
                             print(f'Jogada Minimax: {jogada_minimax}')
 
@@ -551,9 +551,14 @@ class Jogo:
                     self.tabuleiro.desenhar_tabuleiro(self.tela, self.indice_tabuleiro) # Mostra tabuleiro na tela
 
                     # Fonte Jogador 1
-                    self.fonte_jogador1 = self.fonte_fredokaone_70.render('Jogador 1', True, '#CF302B')
-                    self.fonte_jogador1_rect = self.fonte_jogador1.get_rect(center= (TELA_X / 2, 100))
-                    self.tela.blit(self.fonte_jogador1, self.fonte_jogador1_rect)
+                    if self.adversario == self.jogo_status['jogar_minimax']:
+                        self.fonte_jogador1 = self.fonte_fredokaone_70.render('Minimax', True, '#CF302B')
+                        self.fonte_jogador1_rect = self.fonte_jogador1.get_rect(center= (TELA_X / 2, 100))
+                        self.tela.blit(self.fonte_jogador1, self.fonte_jogador1_rect)
+                    else:
+                        self.fonte_jogador1 = self.fonte_fredokaone_70.render('Jogador 1', True, '#CF302B')
+                        self.fonte_jogador1_rect = self.fonte_jogador1.get_rect(center= (TELA_X / 2, 100))
+                        self.tela.blit(self.fonte_jogador1, self.fonte_jogador1_rect)                       
 
                     # Fonte Jogador 2
                     self.fonte_jogador2 = self.fonte_fredokaone_70.render('Jogador 2', True, '#CF302B')
@@ -562,7 +567,7 @@ class Jogo:
 
                     # Relógio 1
                     self.tela.blit(self.sprite_relogio1, self.sprite_relogio1_rect)
-                    if self.jogador_atual == self.jogador1:
+                    if self.jogador_atual == self.jogador1 or self.jogador_atual == self.jogador2:
                         if event.type == self.TIMER_EVENTO:
                             self.tempo_restante -= 1000  # 1000ms = 1 segundo
 
@@ -572,6 +577,7 @@ class Jogo:
                         self.texto_temporizador = self.fonte_quicksand_32.render(f"{segundos_restantes}", True, 'Red')
                         self.texto_temporizador_rect = self.sprite_relogio1.get_rect(center= (170 / 2, 56 / 2))
                         self.tela.blit(self.texto_temporizador, self.texto_temporizador_rect)
+                    
 
                         
                     else:
@@ -618,8 +624,11 @@ class Jogo:
                         if event.key == pygame.K_RETURN:
                             self.tabuleiro.limpar_tabuleiro()
 
-                            if randint(0, 2) == 1: self.jogador_atual = self.jogador1
-                            else: self.jogador_atual = self.jogador2   
+                            if self.adversario == self.jogo_status['jogar_minimax']:
+                                pass
+                            else:
+                                if randint(0, 2) == 1: self.jogador_atual = self.jogador1
+                                else: self.jogador_atual = self.jogador2   
 
                             self.jogo_ativo = self.jogo_status['jogar']
         

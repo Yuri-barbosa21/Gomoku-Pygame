@@ -109,11 +109,9 @@ class Minimax:
         return False
 
     def jogar(self, estado, profundidade_max, jogadas_player, jogadas_minimax, ult_jogada, jogador):
-        jogada_heuristica = self.heuristica(jogadas_player, jogadas_minimax, 3, estado)
+        jogada_heuristica = self.heuristica(jogadas_player, jogadas_minimax, estado)
         if jogada_heuristica == False:
             
             coordenada_minimax = self.fazer_jogada_minimax(estado, jogador, profundidade_max, ult_jogada)
             return coordenada_minimax
         else: return jogada_heuristica
-
-        
