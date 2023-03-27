@@ -39,13 +39,13 @@ print(" ")
 #Jogada válida
 jogada_verificar_linha = 0
 jogada_verificar_coluna = 14
-print(f'A jogada ({jogada_verificar_linha}, {jogada_verificar_coluna}) é {mini.verificar_jogada(ESTADO, (jogada_verificar_linha, jogada_verificar_coluna))}')
+print(f'A jogada ({jogada_verificar_linha}, {jogada_verificar_coluna}) é {matrizes.verificar_jogada(ESTADO, (jogada_verificar_linha, jogada_verificar_coluna))}')
 print(" ")
 
 #Jogada inválida (SE (0, 0) for 1)
 jogada_verificar_linha = 0
 jogada_verificar_coluna = 0
-print(f'A jogada ({jogada_verificar_linha}, {jogada_verificar_coluna}) é {mini.verificar_jogada(ESTADO, (jogada_verificar_linha, jogada_verificar_coluna))} <- (0, 0) != 0')
+print(f'A jogada ({jogada_verificar_linha}, {jogada_verificar_coluna}) é {matrizes.verificar_jogada(ESTADO, (jogada_verificar_linha, jogada_verificar_coluna))} <- (0, 0) != 0')
 print(" ")
 
 #====================================================================================================
