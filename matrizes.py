@@ -221,15 +221,7 @@ def diminuir_matriz(matriz, jogada: tuple):
             coluna_inicio = 0
             coluna_fim = jogada[1] + y + 1
         
-        # print(linha_inicio, linha_fim)
-        # print(linha_inicio, linha_fim)
-
-        # print(linha_fim - linha_inicio)
-        # print(coluna_fim - coluna_inicio)
-
         nova_matriz = np.zeros((linha_fim - linha_inicio, coluna_fim - coluna_inicio), dtype=int).tolist()
-        #nova_matriz = [[0 for j in range(linha_fim - linha_inicio)] for i in range(coluna_fim - coluna_inicio)]
-
         for i in range(linha_fim - linha_inicio):
             for j in range(coluna_fim - coluna_inicio):
                 nova_matriz[i][j] = matriz[linha_inicio + i][coluna_inicio + j]
@@ -256,11 +248,7 @@ def diminuir_matriz(matriz, jogada: tuple):
             coluna_inicio = jogada[1] - y
             coluna_fim = 15
 
-        # print(linha_inicio, linha_fim)
-        # print(coluna_inicio, coluna_fim)
-
         nova_matriz = np.zeros((linha_fim - linha_inicio, coluna_fim - coluna_inicio), dtype=int).tolist()
-        #nova_matriz = [[0 for j in range(linha_fim - linha_inicio)] for i in range(coluna_fim - coluna_inicio)]
 
         for i in range(linha_fim - linha_inicio):
             for j in range(coluna_fim - coluna_inicio):
@@ -285,13 +273,8 @@ def diminuir_matriz(matriz, jogada: tuple):
         if jogada[1] + y > 14:
             coluna_inicio = jogada[1] - y
             coluna_fim = 15
-
-        # print(linha_inicio, linha_fim)
-        # print(coluna_inicio, coluna_fim)
-
+            
         # CRIA UMA MATRIZ COM O TAMANHO DA LINHA E COLUNA
-        #nova_matriz = np.zeros((linha_fim - linha_inicio, coluna_fim - coluna_inicio))
-        #nova_matriz = [[0 for j in range(linha_fim - linha_inicio)] for i in range(coluna_fim - coluna_inicio)]
         nova_matriz = np.zeros((linha_fim - linha_inicio, coluna_fim - coluna_inicio), dtype=int).tolist()
 
         for i in range(linha_fim - linha_inicio):
