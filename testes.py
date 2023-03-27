@@ -1,4 +1,4 @@
-import matrizes, regex, minimax
+import matrizes, regex, minimax, regex_testes
 
 #15x15
 ESTADO = [
@@ -114,7 +114,7 @@ print(f'Jogadas do Player: {jogadas_player}')
 print(" ")
 
 #====================================================================================================
-#Testes Jogadas Minimax
+#Testes Matriz Reduzida
 #====================================================================================================
 
 print("INÍCIO TESTES MATRIZ REDUZIDA")
@@ -222,7 +222,7 @@ print("")
 
 #Cálculo do valor heurístico no REGEX
 print("String, regras e matches")
-valor_teste_1 = regex.calcular_pontuacao(linhas_estado_sem_zeros, regex.regras_jogador1)
+valor_teste_1 = regex_testes.calcular_pontuacao(linhas_estado_sem_zeros, regex_testes.regras_jogador1)
 print(f'Valor heurístico do estado atual para o jogador 1: {valor_teste_1}')
 print(" ")
 
@@ -234,3 +234,46 @@ print(" ")
 
 #Comparação dos resultados
 print(f"Diferença na pontuação: {valor_teste_1 - valor_teste_2}")
+
+#====================================================================================================
+#Teste gerar filhos
+#====================================================================================================
+
+print("INÍCIO TESTES GERAR FILHOS")
+print(" ")
+
+print("Estado atual")
+for linha in ESTADO: print(linha)
+print("")
+
+filhos1 = mini.gerar_filhos(ESTADO, 1)
+
+print("Filhos gerados sem heurística:")
+print(len(filhos1))
+print("")
+
+print("Filhos gerados com heurística:")
+contagem_filhos_heuristica = 0
+for i in range(len(ESTADO)):
+    for j in range(len(ESTADO[i])):
+        if ESTADO[i][j] == 0 and matrizes.vizinhanca(ESTADO, i, j):
+            print(f'Coordenada passível de filho: {i, j}')
+            contagem_filhos_heuristica += 1
+print("")
+print(f'Número de filhos gerados: {contagem_filhos_heuristica}')
+print("")
+
+#====================================================================================================
+#Teste jogada minimax
+#====================================================================================================
+
+print("INÍCIO TESTES JOGADA MINIMAX")
+print("")
+
+print("Estado atual")
+for linha in ESTADO: print(linha)
+print("")
+
+jogada_minimax, coordenada_minimax = mini.fazer_jogada_minimax(ESTADO, 1, 2, jogadas_player[len(jogadas_player) - 1])
+print(f'Jogada na matriz original: {jogada_minimax}')
+print(f'Jogada na matriz reduzida: {coordenada_minimax}')
