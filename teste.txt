@@ -1,4 +1,0 @@
-NOTAS 
-
-diminuir_matriz -> passar sempre a ultima jogada do minimax
-vizinhanca -> não olha diagonais
