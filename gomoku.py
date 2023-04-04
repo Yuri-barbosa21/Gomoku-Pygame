@@ -436,7 +436,7 @@ class Jogo:
                     self.tela.blit(self.imagem_tabuleiro, self.imagem_tabuleiro_rect)
                     self.tabuleiro.animar_botao(self.imagem_tabuleiro, self.imagem_tabuleiro_rect, self.tela)
 
-                    # Fonte Jogadores_
+                    
 
                     # Verifia clique nos botões
                     pos = pygame.mouse.get_pos()
@@ -567,15 +567,19 @@ class Jogo:
 
                     # Relógio 1
                     self.tela.blit(self.sprite_relogio1, self.sprite_relogio1_rect)
-                    if self.jogador_atual == self.jogador1 or self.jogador_atual == self.jogador2:
+                    if self.jogador_atual == self.jogador1:
                         if event.type == self.TIMER_EVENTO:
                             self.tempo_restante -= 1000  # 1000ms = 1 segundo
 
-                        segundos_restantes = self.tempo_restante // 1000
-                        minutos = 15
+                        segundos_restantes = (self.tempo_restante // 1000) % 60
+                        minutos = (self.tempo_restante // 1000) // 60
+
+                        if self.tempo_restante <= 0:
+                            minutos -= 1
+                            
                     
-                        self.texto_temporizador = self.fonte_quicksand_32.render(f"{segundos_restantes}", True, 'Red')
-                        self.texto_temporizador_rect = self.sprite_relogio1.get_rect(center= (170 / 2, 56 / 2))
+                        self.texto_temporizador = self.fonte_quicksand_32.render(f"{minutos}:{segundos_restantes % 60}", True, 'White')
+                        self.texto_temporizador_rect = self.sprite_relogio1.get_rect(center= ((TELA_X / 2) + 300, 162))
                         self.tela.blit(self.texto_temporizador, self.texto_temporizador_rect)
                     
 
