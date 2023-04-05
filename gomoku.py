@@ -578,7 +578,6 @@ class Jogo:
 
 
                     #--------------------------------- Relógio ---------------------------------------
-
                     if self.adversario == self.jogo_status['jogar_pvp']:
                         # Sprite Relógio 2
                         self.tela.blit(self.sprite_relogio1, self.sprite_relogio1_rect)
@@ -619,7 +618,7 @@ class Jogo:
                             self.tempo_restante2 -= 1000  # 1000ms = 1 segundo
 
                         self.segundos_restantes2 = (self.tempo_restante2 // 1000) % 60
-                        self.minutos2 = ((self.tempo_restante2 // 1000) // 60) - 14
+                        self.minutos2 = ((self.tempo_restante2 // 1000) // 60) 
 
                         if self.tempo_restante2 <= 0:
                             self.minutos2 -= 1
