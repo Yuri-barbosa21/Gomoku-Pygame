@@ -11,7 +11,7 @@ import matrizes
 TELA_X = 1800
 TELA_Y = 1000
 
-# Tamnho do tabuleiro
+# Tamanho do tabuleiro
 TABULEIRO_LARGURA = 15
 TABULEIRO_ALTURA = 15
 
@@ -80,7 +80,7 @@ class Tabuleiro:
             self.matriz_copia = copy.deepcopy(self.matriz)
             self.jogos.append(self.matriz_copia) # Cria uma cópia do estado atual e adiciona na lista de estados
 
-            print(f'LINHA: {linha} - COLUNA: {coluna}')
+            #print(f'LINHA: {linha} - COLUNA: {coluna}')
 
             if jogador.num_peca == 1:
                 self.matriz[linha][coluna] = 1
@@ -135,7 +135,7 @@ class Tabuleiro:
                 if (self.matriz[i][j] == peca):
                     ganhou += 1
                     if (ganhou == 5):
-                        print('GANHOU')
+                        #print('GANHOU')
                         return True
                 else:
                     ganhou = 0
@@ -147,7 +147,7 @@ class Tabuleiro:
                 if (self.matriz[i][j] == peca):
                     ganhou += 1
                     if (ganhou == 5):
-                        print('GANHOU')
+                        #print('GANHOU')
                         return True
                 else:
                     ganhou = 0
@@ -160,7 +160,7 @@ class Tabuleiro:
                     if (self.matriz[i+k][j+k] == peca):
                         ganhou += 1
                         if (ganhou == 5):
-                            print('GANHOU')
+                            #print('GANHOU')
                             return True
 
         # Verifica diagonal secundária
@@ -171,7 +171,7 @@ class Tabuleiro:
                     if (self.matriz[i-k][j+k] == peca):
                         ganhou += 1
                         if (ganhou == 5):
-                            print('GANHOU')
+                            #print('GANHOU')
                             return True
 
         return False
@@ -307,8 +307,6 @@ class Jogo:
         # Jogadores
         self.fonte_jogadores = self.fonte_quicksand_32.render('Jogadores', True, '#CF302B')
         self.fonte_jogadores_rect = self.fonte_jogadores.get_rect(center= (TELA_X / 2, TELA_Y / 2))
-
-
 
     def iniciar_jogo(self):
 
@@ -545,7 +543,7 @@ class Jogo:
                                 
                                 self.jogada_minimax = self.minimax.jogar(self.tabuleiro.matriz, 2, self.jogadas_player, self.jogadas_minimax, self.jogadas_player[-1], 1)
                             self.jogadas_minimax.append(self.jogada_minimax)
-                            print(f'Jogada Minimax: {self.jogada_minimax}')
+                            #print(f'Jogada Minimax: {self.jogada_minimax}')
 
                             if self.tabuleiro.jogar(linha= self.jogada_minimax[0], coluna= self.jogada_minimax[1], jogador= self.jogador_atual): # Efetua jogada se for válida
                                 self.tabuleiro.desenhar_peca(self.tela, self.jogada_minimax[0], self.jogada_minimax[1], self.jogador_atual) # Desenha peça no local clicado
@@ -554,7 +552,6 @@ class Jogo:
                                     self.jogo_ativo = self.jogo_status['fim_jogo']
                                 else:
                                     # Troca jogador
-                                    print('Trocou')
                                     self.jogador_atual = self.minimax  if self.jogador_atual == self.jogador2 else self.jogador2
 
 
@@ -679,11 +676,26 @@ class Jogo:
                             else:
                                 if randint(0, 2) == 1: 
                                     self.jogador_atual = self.jogador1
-                                    self.jogo_ativo = self.jogo_status['jogar']
-
                                 else: 
                                     self.jogador_atual = self.jogador2   
-                                    self.jogo_ativo = self.jogo_status['jogar']
+                                    
+                                self.tempo_maximo1 = 900000
+                                self.tempo_restante1 = self.tempo_maximo1
+
+                                self.tempo_maximo2 = 900000 
+                                self.tempo_restante2 = self.tempo_maximo2
+
+                                self.texto_temporizador1 = 900
+                                self.texto_temporizador2 = 900
+
+                                self.segundos_restantes1 = 00
+                                self.minutos1 = 15
+
+                                self.segundos_restantes2 = 00
+                                self.minutos2 = 15
+
+
+                                self.jogo_ativo = self.jogo_status['jogar']
                             
         
 

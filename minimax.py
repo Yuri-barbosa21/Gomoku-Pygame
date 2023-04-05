@@ -77,7 +77,7 @@ class Minimax:
     def heuristica(self, jogadas_player, jogadas_minimax, matriz):
         # FAZ A PRIMEIRA JOGADA DE TODAS NO CENTRO
         if len(jogadas_minimax) == 0 and len(jogadas_player) == 0:
-            print(f'MINIMAX.PY/heuristica -> Rodada 1: (7, 7)')
+            #print(f'MINIMAX.PY/heuristica -> Rodada 1: (7, 7)')
             return ((7, 7))
 
         # FAZ A PRIMEIRA JOGADA EM VOLTA DA DA JOGADA DO PLAYER
@@ -90,7 +90,7 @@ class Minimax:
                     JOGADAS_MINIMAX.append((linha, coluna))
                     break
 
-            print(f'Rodada 2: ({linha}, {coluna})')
+            #print(f'Rodada 2: ({linha}, {coluna})')
             return ((linha, coluna))
         
         # FAZ A SEGUNDA JOGADA EM VOLTA DA DA JOGADA DO MINIMAX
@@ -103,7 +103,7 @@ class Minimax:
                     JOGADAS_MINIMAX.append((linha, coluna))
                     break
 
-            print(f'MINIMAX.PY/heuristica -> Rodada 3: ({linha}, {coluna})')
+            #print(f'MINIMAX.PY/heuristica -> Rodada 3: ({linha}, {coluna})')
             return ((linha, coluna))
 
         return False
