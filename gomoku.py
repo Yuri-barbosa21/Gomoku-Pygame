@@ -186,6 +186,7 @@ class Jogo:
         self.minimax = minimax
         self.jogadas_player = []
         self.jogadas_minimax = []
+        self.jogada_minimax = (())
 
 
 
@@ -217,13 +218,23 @@ class Jogo:
 
         
         # Define o temporizador em milissegundos
-        self.tempo_maximo = 900000  # 15 minutos em milissegundos
-        self.tempo_restante = self.tempo_maximo
+        self.tempo_maximo1 = 900000  # 15 minutos em milissegundos
+        self.tempo_restante1 = self.tempo_maximo1
+
+        self.tempo_maximo2 = 900000  # 15 minutos em milissegundos
+        self.tempo_restante2 = self.tempo_maximo2
 
         # Define o evento de temporizador
         self.TIMER_EVENTO = pygame.USEREVENT + 1
         pygame.time.set_timer(self.TIMER_EVENTO, 1000)  # 1000ms = 1 segundo
-        self.texto_temporizador = 900
+        self.texto_temporizador1 = 900
+        self.texto_temporizador2 = 900
+
+        self.segundos_restantes1 = (self.tempo_restante1 // 1000) % 60
+        self.minutos1 = (self.tempo_restante1 // 1000) // 60
+
+        self.segundos_restantes2 = (self.tempo_restante2 // 1000) % 60
+        self.minutos2 = (self.tempo_restante2 // 1000) // 60
    
     def carregar_imagens(self):
 
@@ -529,15 +540,15 @@ class Jogo:
                             #jogar(self, estado, profundidade_max, jogadas_player, jogadas_minimax, ult_jogada):
                             if len(self.jogadas_minimax) == 0:
                                 
-                                jogada_minimax = self.minimax.jogar(self.tabuleiro.matriz, 2, self.jogadas_player, self.jogadas_minimax, None, 1)
+                                self.jogada_minimax = self.minimax.jogar(self.tabuleiro.matriz, 2, self.jogadas_player, self.jogadas_minimax, None, 1)
                             else:
                                 
-                                jogada_minimax = self.minimax.jogar(self.tabuleiro.matriz, 2, self.jogadas_player, self.jogadas_minimax, self.jogadas_player[-1], 1)
-                            self.jogadas_minimax.append(jogada_minimax)
-                            print(f'Jogada Minimax: {jogada_minimax}')
+                                self.jogada_minimax = self.minimax.jogar(self.tabuleiro.matriz, 2, self.jogadas_player, self.jogadas_minimax, self.jogadas_player[-1], 1)
+                            self.jogadas_minimax.append(self.jogada_minimax)
+                            print(f'Jogada Minimax: {self.jogada_minimax}')
 
-                            if self.tabuleiro.jogar(linha= jogada_minimax[0], coluna= jogada_minimax[1], jogador= self.jogador_atual): # Efetua jogada se for válida
-                                self.tabuleiro.desenhar_peca(self.tela, jogada_minimax[0], jogada_minimax[1], self.jogador_atual) # Desenha peça no local clicado
+                            if self.tabuleiro.jogar(linha= self.jogada_minimax[0], coluna= self.jogada_minimax[1], jogador= self.jogador_atual): # Efetua jogada se for válida
+                                self.tabuleiro.desenhar_peca(self.tela, self.jogada_minimax[0], self.jogada_minimax[1], self.jogador_atual) # Desenha peça no local clicado
 
                                 if self.tabuleiro.verificar_se_ganhou(self.jogador_atual.num_peca): # Verifica se ganhou
                                     self.jogo_ativo = self.jogo_status['fim_jogo']
@@ -565,35 +576,63 @@ class Jogo:
                     self.fonte_jogador2_rect = self.fonte_jogador2.get_rect(center= (TELA_X / 2, TELA_Y - 100))
                     self.tela.blit(self.fonte_jogador2, self.fonte_jogador2_rect)
 
-                    # Relógio 1
-                    self.tela.blit(self.sprite_relogio1, self.sprite_relogio1_rect)
-                    if self.jogador_atual == self.jogador1:
+
+                    #--------------------------------- Relógio ---------------------------------------
+
+                    if self.adversario == self.jogo_status['jogar_pvp']:
+                        # Sprite Relógio 2
+                        self.tela.blit(self.sprite_relogio1, self.sprite_relogio1_rect)
+
+                        # Sprite Relógio 2
+                        self.tela.blit(self.sprite_relogio2, self.sprite_relogio2_rect)
+
+                    if self.jogador_atual == self.jogador1 and self.adversario == self.jogo_status['jogar_pvp']:
+                        # Mostra relógio 2 parado
+                        self.texto_temporizador2 = self.fonte_fredokaone_40.render('{:02d}:{:02d}'.format(self.minutos2, self.segundos_restantes2), True, 'White')
+                        self.texto_temporizador2_rect = self.sprite_relogio1.get_rect(center= ((TELA_X / 2) - 168, 849))
+                        self.tela.blit(self.texto_temporizador2, self.texto_temporizador2_rect)
+
+                        # Eventos para funcionamento do relógio 1
                         if event.type == self.TIMER_EVENTO:
-                            self.tempo_restante -= 1000  # 1000ms = 1 segundo
+                            self.tempo_restante1 -= 1000  # 1000ms = 1 segundo
 
-                        segundos_restantes = (self.tempo_restante // 1000) % 60
-                        minutos = (self.tempo_restante // 1000) // 60
+                        self.segundos_restantes1 = (self.tempo_restante1 // 1000) % 60
+                        self.minutos1 = ((self.tempo_restante1 // 1000) // 60) 
 
-                        if self.tempo_restante <= 0:
-                            minutos -= 1
+                        if self.tempo_restante1 <= 0:
+                            self.minutos1 -= 1
                             
+                        # Mostra relógio 1
+                        self.texto_temporizador1 = self.fonte_fredokaone_40.render('{:02d}:{:02d}'.format(self.minutos1, self.segundos_restantes1), True, 'White')
+                        self.texto_temporizador1_rect = self.sprite_relogio1.get_rect(center= ((TELA_X / 2) + 282, 158))
+                        self.tela.blit(self.texto_temporizador1, self.texto_temporizador1_rect)
+
+                    elif self.jogador_atual == self.jogador2 and self.adversario == self.jogo_status['jogar_pvp']:
+                        # Mostra relógio 1 parado
+                        self.texto_temporizador1 = self.fonte_fredokaone_40.render('{:02d}:{:02d}'.format(self.minutos1, self.segundos_restantes1), True, 'White')
+                        self.texto_temporizador1_rect = self.sprite_relogio1.get_rect(center= ((TELA_X / 2) + 282, 158))
+                        self.tela.blit(self.texto_temporizador1, self.texto_temporizador1_rect)
+
+
+                        # Eventos para funcionamento do relógio 2
+                        if event.type == self.TIMER_EVENTO:
+                            self.tempo_restante2 -= 1000  # 1000ms = 1 segundo
+
+                        self.segundos_restantes2 = (self.tempo_restante2 // 1000) % 60
+                        self.minutos2 = ((self.tempo_restante2 // 1000) // 60) - 14
+
+                        if self.tempo_restante2 <= 0:
+                            self.minutos2 -= 1
+                            
+                        # Mostra relógio 2
+                        self.texto_temporizador2 = self.fonte_fredokaone_40.render('{:02d}:{:02d}'.format(self.minutos2, self.segundos_restantes2), True, 'White')
+                        self.texto_temporizador2_rect = self.sprite_relogio1.get_rect(center= ((TELA_X / 2) - 168, 849))
+                        self.tela.blit(self.texto_temporizador2, self.texto_temporizador2_rect)
+
+
                     
-                        self.texto_temporizador = self.fonte_quicksand_32.render(f"{minutos}:{segundos_restantes % 60}", True, 'White')
-                        self.texto_temporizador_rect = self.sprite_relogio1.get_rect(center= ((TELA_X / 2) + 300, 162))
-                        self.tela.blit(self.texto_temporizador, self.texto_temporizador_rect)
+
                     
-
-                        
-                    else:
-                        #if self.texto_temporizador == 900:
-
-                        #self.tela.blit(self.texto_temporizador, self.sprite_relogio1_rect)
-                        pass
-
-
-
-                    # Relógio 2
-                    self.tela.blit(self.sprite_relogio2, self.sprite_relogio2_rect)
 
                     # Desenha Peças no tabuleiro
                     for i in range(TABULEIRO_LARGURA):
@@ -629,12 +668,24 @@ class Jogo:
                             self.tabuleiro.limpar_tabuleiro()
 
                             if self.adversario == self.jogo_status['jogar_minimax']:
-                                pass
-                            else:
-                                if randint(0, 2) == 1: self.jogador_atual = self.jogador1
-                                else: self.jogador_atual = self.jogador2   
+                                self.jogadas_player.clear()
+                                self.jogadas_minimax.clear()
+                                self.jogada_minimax = (())
+                                if randint(0, 2) == 1: 
+                                    self.jogador_atual = self.minimax
+                                else: 
+                                    self.jogador_atual = self.jogador2   
 
-                            self.jogo_ativo = self.jogo_status['jogar']
+                                self.jogo_ativo = self.jogo_status['jogar']
+                            else:
+                                if randint(0, 2) == 1: 
+                                    self.jogador_atual = self.jogador1
+                                    self.jogo_ativo = self.jogo_status['jogar']
+
+                                else: 
+                                    self.jogador_atual = self.jogador2   
+                                    self.jogo_ativo = self.jogo_status['jogar']
+                            
         
 
             pygame.display.update() # Atualiza a tela
