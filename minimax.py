@@ -15,12 +15,29 @@ class Minimax:
         return matrizes.calcular_pontuacao(estado, jogador)
 
 
+    # def gerar_filhos(self, estado, jogador_atual):
+    #     posicoes_vazias = [(i, j) for i in range(len(estado)) for j in range(len(estado[i])) if estado[i][j] == 0]
+    #     print(posicoes_vazias)
+    #     filhos = [copy.deepcopy(estado) for _ in posicoes_vazias]
+    #     for filho, (i, j) in zip(filhos, posicoes_vazias):
+    #         filho[i][j] = jogador_atual
+    #     return filhos if filhos else [[]]
+
     def gerar_filhos(self, estado, jogador_atual):
-        posicoes_vazias = [(i, j) for i in range(len(estado)) for j in range(len(estado[i])) if estado[i][j] == 0]
+        posicoes_vazias = []
+        
+        for i in range(len(estado)):
+            for j in range(len(estado)):
+                if estado[i][j] == 0 and matrizes.vizinhanca(estado, i, j):
+                    posicoes_vazias.append((i, j))
+                    
+            
+        print(posicoes_vazias)
+
         filhos = [copy.deepcopy(estado) for _ in posicoes_vazias]
         for filho, (i, j) in zip(filhos, posicoes_vazias):
             filho[i][j] = jogador_atual
-        return filhos if filhos else [[]]
+        return filhos if filhos else [[]] 
 
 
     def jogo_final(self, estado: list[list]):
@@ -58,6 +75,7 @@ class Minimax:
     def fazer_jogada_minimax(self, estado, jogador, profundidade_maxima, jogada):
         melhor_valor = float('-inf') if jogador == 1 else float('inf')
         melhor_coordenada = None
+  
 
         for i in range(len(estado)):
             for j in range(len(estado[i])):
@@ -77,7 +95,7 @@ class Minimax:
     def heuristica(self, jogadas_player, jogadas_minimax, matriz):
         # FAZ A PRIMEIRA JOGADA DE TODAS NO CENTRO
         if len(jogadas_minimax) == 0 and len(jogadas_player) == 0:
-            #print(f'MINIMAX.PY/heuristica -> Rodada 1: (7, 7)')
+            print(f'MINIMAX.PY/heuristica -> Rodada 1: (7, 7)')
             return ((7, 7))
 
         # FAZ A PRIMEIRA JOGADA EM VOLTA DA DA JOGADA DO PLAYER
@@ -90,7 +108,7 @@ class Minimax:
                     JOGADAS_MINIMAX.append((linha, coluna))
                     break
 
-            #print(f'Rodada 2: ({linha}, {coluna})')
+            print(f'Rodada 2: ({linha}, {coluna})')
             return ((linha, coluna))
         
         # FAZ A SEGUNDA JOGADA EM VOLTA DA DA JOGADA DO MINIMAX
@@ -103,7 +121,7 @@ class Minimax:
                     JOGADAS_MINIMAX.append((linha, coluna))
                     break
 
-            #print(f'MINIMAX.PY/heuristica -> Rodada 3: ({linha}, {coluna})')
+            print(f'MINIMAX.PY/heuristica -> Rodada 3: ({linha}, {coluna})')
             return ((linha, coluna))
 
         return False

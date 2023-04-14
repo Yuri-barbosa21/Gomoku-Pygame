@@ -538,10 +538,10 @@ class Jogo:
                             #jogar(self, estado, profundidade_max, jogadas_player, jogadas_minimax, ult_jogada):
                             if len(self.jogadas_minimax) == 0:
                                 
-                                self.jogada_minimax = self.minimax.jogar(self.tabuleiro.matriz, 2, self.jogadas_player, self.jogadas_minimax, None, 1)
+                                self.jogada_minimax = self.minimax.jogar(self.tabuleiro.matriz, 4, self.jogadas_player, self.jogadas_minimax, None, 1)
                             else:
                                 
-                                self.jogada_minimax = self.minimax.jogar(self.tabuleiro.matriz, 2, self.jogadas_player, self.jogadas_minimax, self.jogadas_player[-1], 1)
+                                self.jogada_minimax = self.minimax.jogar(self.tabuleiro.matriz, 4, self.jogadas_player, self.jogadas_minimax, self.jogadas_player[-1], 1)
                             self.jogadas_minimax.append(self.jogada_minimax)
                             #print(f'Jogada Minimax: {self.jogada_minimax}')
 
