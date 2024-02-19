@@ -13,7 +13,7 @@ A implementação do algoritmo Minimax foi realizada sem o auxílio de qualquer 
 
 O código do projeto é dividido em vários arquivos para facilitar a manutenção e a compreensão do código. Os principais arquivos são:
 
-- `main.py`: Arquivo principal com a implementação do jogo, todo o visual foi feito com a biblioteca PyGames.
+- `gomoku.py`: Arquivo principal com a implementação do jogo, todo o visual foi feito com a biblioteca PyGames.
 
 - `minimax.py`: Este arquivo contém a implementação do algoritmo Minimax. Ele inclui funções para calcular o valor heurístico de um estado, gerar filhos de um estado, verificar se um jogo chegou ao fim, e fazer uma jogada usando o algoritmo Minimax.
 
