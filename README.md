@@ -23,8 +23,3 @@ O código do projeto é dividido em vários arquivos para facilitar a manutenç�
 ## Links Úteis
 
 - [Artigo sobre o projeto](https://dev.to/vinipetra/como-fizemos-uma-ia-jogar-gomoku-48mk)
-
-
-## Nota
-
-O código da implementação do jogo com o Pygame não está incluído neste README, pois não é necessário para entender a lógica do algoritmo Minimax e as otimizações que foram feitas. No entanto, você pode encontrar o código completo no repositório do GitHub mencionado acima.
