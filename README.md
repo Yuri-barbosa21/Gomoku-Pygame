@@ -1,5 +1,4 @@
 # Gomoku-Pygame
-# Projeto Gomoku
 
 Este projeto consiste na aplicação do algoritmo Minimax no jogo Gomoku. O objetivo era otimizar o desempenho do jogo e isso foi alcançado através de várias melhorias implementadas ao longo do desenvolvimento.
 
